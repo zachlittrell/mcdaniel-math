@@ -70,10 +70,12 @@ main = do
  - (note, we don't have to worry about the case where a or b = 0,
  - since visibly f(zero, non-zero) = undefined,
  - and f(0,0) = 0 < f(1,1) = 1)
- - Also, we can exclude the cases where a = 5 and b is even (or vice
+ - Also, we can exclude the cases where a = 5 and b is even
+ - and non-zero (or vice
  - versa), since if the last digit is 5, it is not an even number,
- - and if the number is even, it ends in an even digit, and thus
- - isn't divisible by 5.
+ - and if the number is even, it ends in an even digits, so either
+ - it ends with an even digit between 2-8, thus isn't divisible by 5,
+ - or ends in a zero, which violates our assumption.
  -
  - Since the first iteration of f'(nums) lets num = [""],
  - newNums = [a:""] ++ [b:""] = [a] ++ [b] == [a,b]
