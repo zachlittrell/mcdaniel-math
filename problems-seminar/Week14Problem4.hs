@@ -58,6 +58,12 @@ main = do
     --fs is all pairs of digits x and y and the result of f(a,b),
     --so long as the pair of digit has a solution, as defined
     --by hasSolution.
+    --i.e. fs = {<x,y,f(x,y)> | for each x in {1,2..9},
+    --                          for each y in {x,x+1..9},
+    --                          hasSolution x y}
+    --Note, we only check all ys which are greater than or equal to
+    --x because obviously the f in the problem's description
+    --is symmetric.
     fs = [[x,y, f x y] | x<-[1..9], y<-[x..9], hasSolution x y]
     --returns false iff one digit is 5 and the other is even.
     hasSolution x y
