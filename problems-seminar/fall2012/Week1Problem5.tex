@@ -1,0 +1,63 @@
+\documentclass[fleqn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[parfill]{parskip}
+\usepackage[vmargin=0.5cm]{geometry}
+\setlength\parindent{0pt}
+\setlength{\mathindent}{0pt}
+\begin{document}
+\begin{align*}
+  \text{Let } S_{k} = \lbrace x' | & 1 \leq x \in \mathbb{Z} \leq n \\
+	                          & \text{Let } x' = \pm x^2 \\
+		                  & -x' \not\in S_{k}
+             \rbrace
+             \end{align*}
+for positive integer $k$ and some positive integer $n$, such that:\\
+$\displaystyle\sum\limits_{z \in S_{k}} z = k$\\
+if such a set exists.
+
+Let $P(k)$ be true $\Leftrightarrow S_{k} $ exists, for a positive integer $k$.
+
+Proof of $P$ by Induction on $k$
+
+Base Cases:\\
+$k = 1:$\\
+Let $S_{k} = \lbrace 1 \rbrace$.\\
+$\displaystyle\sum\limits_{z \in S_{k}} z = 1 \Rightarrow P(k)$.
+
+$k = 2:$\\
+Let $S_{k} = \lbrace 1,-4,-9,16 \rbrace$.\\
+$\displaystyle\sum\limits_{z \in S_{k}} z = 2 \Rightarrow P(k)$.
+
+$k = 3:$\\
+Let $S_{k} = \lbrace-1,4\rbrace$.\\
+$\displaystyle\sum\limits_{z \in S_{k}} z = 3 \Rightarrow P(k)$.
+
+$k = 4:$\\
+Let $S_{k} = \lbrace -1,-4,9 \rbrace$.\\
+$\displaystyle\sum\limits_{z \in S_{k}} z = 4 \Rightarrow P(k)$.
+
+Inductive Case: Let $k \geq 1$.\\
+Assume $P(k)$ is true.\\
+WTS $P(k) \Rightarrow P(k+4)$ is true.\\
+Firstly, we'd like to show that given any positive integer $n$, \\
+Lemma 1: $n^2 - (n+1)^2 - (n+2)^2 + (n+3)^2 = 4$\\
+Let $n \in \mathbb{N}$.\\
+$n^2 - (n+1) ^2 - (n+2)^2 + (n+3)^2 =\\
+n^2 - (n^2 + 2n + 1) - (n^2 + 4n + 4) + (n^2 + 6n + 9) =\\
+n^2 - n^2 - 2n - 1 - n^2 - 4n - 4 + n^2 + 6n + 9 = \\
+4 $
+
+Since $P(k)$ is true, $\Rightarrow S_{k}$ exists.\\
+Let $m^2 = max(\lbrace abs(x) | x \in S_{k} \rbrace)$\\
+Let $M = \lbrace (m+1)^2, -(m+2)^2, -(m+3)^2, (m+4)^2 \rbrace$\\
+By the definition of $m^2$, clearly $S_{k} \cap M = \emptyset$\\
+Let $T = S_{k} \cup M \\
+\displaystyle\sum\limits_{z \in T} z =$\\
+$\displaystyle\sum\limits_{z \in S_{k}} z + \displaystyle\sum\limits_{z \in M} z$, which by $P(k) =$\\
+$k + \displaystyle\sum\limits_{z \in M} z$, which by Lemma 1 $=$\\
+$k + 4 = \displaystyle\sum\limits_{z \in T} z \Rightarrow S_{k+4}$ exists $\Rightarrow P(k+4)$.
+
+By mathematical induction, $P$ is true.
+
+\end{document}
