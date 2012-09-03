@@ -7,7 +7,7 @@
 \setlength{\mathindent}{0pt}
 \begin{document}
 \begin{align*}
-  \text{Let } S_{k} = \lbrace x' | & 1 \leq x \in \mathbb{Z} \leq n \\
+  \text{Let } S_{k} = \lbrace x' : & 1 \leq x \in \mathbb{Z} \leq n \\
 	                          & \text{Let } x' = \pm x^2 \\
 		                  & -x' \not\in S_{k}
              \rbrace
@@ -49,7 +49,7 @@ n^2 - n^2 - 2n - 1 - n^2 - 4n - 4 + n^2 + 6n + 9 = \\
 4 $
 
 Since $P(k)$ is true, $\Rightarrow S_{k}$ exists.\\
-Let $m^2 = max(\lbrace abs(x) | x \in S_{k} \rbrace)$\\
+Let $m^2 = max(\lbrace |x| : x \in S_{k} \rbrace)$\\
 Let $M = \lbrace (m+1)^2, -(m+2)^2, -(m+3)^2, (m+4)^2 \rbrace$\\
 By the definition of $m^2$, clearly $S_{k} \cap M = \emptyset$\\
 Let $T = S_{k} \cup M \\
