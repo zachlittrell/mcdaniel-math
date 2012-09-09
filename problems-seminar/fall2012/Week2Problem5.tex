@@ -21,13 +21,16 @@ Assume the contrary: there is no grouping of 200 attendees such that they speak 
 
 Let's take one attendee, $a$.\\
 By Fact 2, $a$ knows at most 5 languages.\\
-By our assumption, for each language $a$ knows, there can be no more than 200 other attendees who also know it $\Rightarrow$ a shares a language with at most $199*5=995$ attendees. Thus, $|B_a| \geq 989$.
+By our assumption, for each language $a$ knows, there can be no more than 200 other attendees who also know it $\Rightarrow$ a shares a language with at most $198*5=990$ attendees. Thus, $|B_a| \geq 994$.
 
 Let $a' \in B_a$.\\
-Also by Fact 2 and our assumption, $|B_{a'}| \geq 989$.\\
-By our assumption, we know 
-$\exists a'' \in B_{a'} \setminus \lbrace a \rbrace, a'' \in B_a$.\\
-(We can take a random group of 199 attendees from $B_{a'} \setminus \lbrace a \rbrace$, add $a$, and from our assumption find an $a''$ who doesn't share a language with $a$)
+Also by Fact 2 and our assumption, $|B_{a'}| \geq 994$.\\
+Suppose $\forall a'' \in B_{a'}\setminus \lbrace a \rbrace, 
+          a'' \not\in B_a$\\
+If we divide the miniumum number of members of $B_{a'}$ by the maximum
+number of languages $a$ knows, i.e. $993/5$, we get 198.6 $\Rightarrow$ there is a language $a$ shares with 199 other attendees, but by our assumption, this cannot be so.\\
+Thus, $\exists a'' \in B_{a'}\setminus \lbrace a \rbrace,
+        a'' \in B_a$.
 
 However, by Fact 1, two attendees in the group 
 $\lbrace a, a', a'' \rbrace$ must share a language 
