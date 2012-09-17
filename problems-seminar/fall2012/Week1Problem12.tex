@@ -9,7 +9,7 @@
 \begin{document}
 There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Simonelli.
 
-Facts:
+\textbf{Facts}
 \begin{enumerate}
   \item  Each mathematician goes to sleep exactly twice.
 
@@ -21,7 +21,7 @@ We want to show there is a point where three mathematicians are all sleeping at 
 
 First, we are going to construct an undirected graph $G$.
 
-Rules for constructing $G$:
+\textbf{Rules for constructing $G$}:
 \begin{enumerate}
   \item For each mathematician, $M$, make two vertices, one for each
         time $M$ takes a snooze. We'll denote these snooze sessions
@@ -36,16 +36,17 @@ Rules for constructing $G$:
 
 To solve our problem, it suffices to show that there are 3 vertices in our graph $G$ who each share an edge with one another.
 
-Definitions:
-\begin{description}
-  \item[$\sim$] For two vertices, $v$ and $w$, we define $v \sim w$
-                to be true when $v$ shares an edge with $w$.
-  \item[Simple Circuit] A sequence of distinct vertices make a 
+\textbf{Definitions}
+\begin{itemize}
+  \item \textbf{$\sim$} For two vertices, $v$ and $w$, we define $v \sim w$
+                to be true when $v$ shares an edge with $w$.\\
+                Note, clearly $\sim$ is symmetrical.
+  \item \textbf{Simple Circuit}  A sequence of distinct vertices make a 
                         simple circuit if you can traverse along
                         all the vertices in order and 
                         return to the first vertex.
-  \item[$V_G$] The vertices in graph $G$.
-\end{description}
+  \item \textbf{$V_G$} The vertices in graph $G$.
+\end{itemize}
 
 From how we construct our graph, we know there are 10 vertices.
 
@@ -55,7 +56,7 @@ So, the number of edges in our graph must be at least ${5 \choose 2} = 10$.
 
 First, we're going to define and prove the following theorem:
 
-Theorem 1.
+\textbf{Theorem 1}\\
 If graph $G$ has $n$ vertices and no simple circuits,
 then $G$ has at most $n-1$ edges.
 
@@ -116,7 +117,7 @@ Case 1. $N \not= X \wedge N \not= Y \wedge N \not= Z \Rightarrow
 
 Case 2. Without loss of generality, let $X = N$.\\
         $Y \sim N \Rightarrow Y \sim L \vee Y \sim M$\\
-        Similarly, $Z \sim N \rightarrow Z \sim L \vee Z \sim M$.
+        Similarly, $Z \sim N \Rightarrow Z \sim L \vee Z \sim M$.
 
 Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
 
