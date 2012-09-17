@@ -44,7 +44,6 @@ Definitions:
                         simple circuit if you can traverse along
                         all the vertices in order and 
                         return to the first vertex.
-  \item[Tree] An undirected graph with no simple circuits.
   \item[$V_G$] The vertices in graph $G$.
 \end{description}
 
@@ -54,27 +53,38 @@ Since we have 5 mathematicians, by Fact 2, for every pair of distinct mathematic
 
 So, the number of edges in our graph must be at least ${5 \choose 2} = 10$.
 
-Note the following theorem:
+First, we're going to define and prove the following theorem:
 
 Theorem 1.
-If connected graph $G$ has $n$ vertices and no simple circuits,
-then $G$ has $n-1$ edges.
+If graph $G$ has $n$ vertices and no simple circuits,
+then $G$ has at most $n-1$ edges.
 
 Proof of Theorem 1 by Induction on $n$:
 
-Base Cases:
-Case $n = 1$: Obviously $G$ has 0 edges and no circuits.\\
-Case $n = 2$: There must be $1$ edge that connects the two vertices, and there are no circuits.
+Base Case: Let $n = 1$.\\
+Then there are 0 edges, thus Theorem 1 works for $n=1$.
 
-Inductive Case: Let $n \geq 2$\\
-Assume Theorem 1 is true for all $x$ such that $1 \leq x \leq n$\\
-Choose a vertex $v$ in $G$.\\
-Since $G$ has no circuits, and there must be at least one edge extending from each vertex, we can follow a path of edges extending from $v$ until we arrive at a vertex, $l$,  with no other edge besides the one used to get to it (otherwise, we could loop back to a vertex we've visited before and get a simple circuit).\\
-If we remove $l$, and its edge from $G$, to create a new graph called $G'$, we still have a connected graph with no circuits and now with $n$ vertices. By our inductive hypothesis, $G'$ has $n-1$ edges $\Rightarrow$ $G$ has $n$ edges.
+Inductive Case: Let $n \geq 1$\\
+Assume Theorem 1 is true for all $x$ such that $1 \leq x \leq n$
 
-Thus, Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true for all $n$.
+Let $G$ be a graph with $n+1$ vertices.\\
+We want to show that $G$ has at most $n$ edges.
+
+Choose a vertex $v$ in $G$.
+
+Case 1. $v$ has no edges.\\
+We then create a graph, $G'$, with $v$ removed.\\
+Obviously, $G'$ also has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges, which means $G$ also has at most $n-1$ edges.
+
+Case 2. $v$ has at least one edge.\\
+Since $G$ has no circuits, we can follow a path of edges from $v$ until we arrive at a vertex, $l$ with no other edge besides the one used to get to it (if this was not the case, we could either find an infinite number of vertices, but $G$ is finite, or end up at a vertex we visited before, thus creating a simple circuit).\\
+We then create a graph called $G'$ with $l$ and its edge removed.
+\\Clearly, $G'$ has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges. So $G$ has at most $n-1+1=n$ edges.
+
+
+So Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true for all $n$.
  
-By the contrapositive of Theorem 1, we can deduce that $G$ is not a tree, thus $G$ has at least one simple circuit.
+By the contrapositive of Theorem 1, we can deduce that $G$ has at least one simple circuit.
 
 Now, we'd like to prove the following proposition:\\
 $P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$, then $\exists$ distinct $ L,M,N \in C,
