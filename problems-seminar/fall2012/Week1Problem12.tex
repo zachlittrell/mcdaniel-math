@@ -1,0 +1,100 @@
+\documentclass[fleqn]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usepackage[parfill]{parskip}
+\usepackage[vmargin=0.5cm]{geometry}
+\setlength\parindent{0pt}
+\setlength{\mathindent}{0pt}
+\begin{document}
+There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Simonelli.
+
+Facts:
+\begin{enumerate}
+  \item  Each mathematician goes to sleep exactly twice.
+
+  \item  For each pair of mathematicians, there is some time where
+         they are both asleep.
+\end{enumerate}
+
+We want to show there is a point where three mathematicians are all sleeping at the same time.
+
+First, we are going to construct an undirected graph $G$.
+
+Rules for constructing $G$:
+\begin{enumerate}
+  \item For each mathematician, $M$, make two vertices, one for each
+        time $M$ takes a snooze. We'll denote these snooze sessions
+        as $M_1$ and $M_2$.
+  \item Two vertices share an edge iff the snooze sessions the vertices
+        represent overlap.
+  \item Clearly, given a vertex $v$, $v$ does not share an edge with
+        itself.
+  \item Clearly, given a mathematician $M$, $M_1$ does not share an
+        edge with $M_2$.
+\end{enumerate}
+
+To solve our problem, it suffices to show that there are 3 vertices in our graph $G$ who each share an edge with one another.
+
+Definitions:
+\begin{description}
+  \item[$\sim$] For two vertices, $v$ and $w$, we define $v \sim w$
+                to be true when $v$ shares an edge with $w$.
+  \item[Simple Circuit] A sequence of distinct vertices make a 
+                        simple circuit if you can traverse along
+                        all the vertices in order and 
+                        return to the first vertex.
+  \item[Tree] An undirected graph with no simple circuits.
+  \item[$V_G$] The vertices in graph $G$.
+\end{description}
+
+From how we construct our graph, we know there are 10 vertices.
+
+Since we have 5 mathematicians, by Fact 2, for every pair of distinct mathematicians, $M$ and $N$, there must exist $i,j \in \lbrace 1,2 \rbrace$ such that $M_i \sim N_j$.
+
+So, the number of edges in our graph must be at least ${5 \choose 2} = 10$.
+
+Note the following theorem:
+
+$T$ is a tree with $n$ vertices $\Rightarrow T$ has $n-1$ edges.
+
+By the contrapositive, we can deduce that $G$ is not a tree, thus $G$ has at least one simple circuit.
+
+Now, we'd like to prove the following proposition:\\
+$P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$, then $\exists$ distinct $ L,M,N \in C,
+                        L \sim M \wedge M \sim N \wedge L \sim N$.\\
+where $n \geq 3$.
+
+Proof of $P$ by induction on $n$
+
+Base Case: Let $n = 3$\\
+Let $\lbrace L, M, N \rbrace$ be the sequence of vertices who make up a 3-length simple circuit in $V_G \Rightarrow\\
+L \sim M \wedge M \sim N \wedge N \wedge L$.
+
+Inductive Case: Let $n \geq 3$\\
+Assume $P(n)$ is true.\\
+Let $C$ be a sequence of vertices who make up an $n+1$-length simple circuit in $V_G$.\\
+Let $\lbrace L,M \rbrace$ = the first two vertices in $C$.\\
+Let $R$ = the vertices after $L$ and $M$ in $C$.\\
+By the definition of $C$, $L \sim M \Rightarrow$\\
+Let $N$ = a new vertex for the spans of time represented by $L$ and $M$ combined.\\
+Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2-4 that we used for $G$.\\
+Clearly, $\forall v \in V_G, v \in V_{G'} \wedge (v \sim L \vee v \sim M)
+          \Rightarrow v \sim N$.\\
+So, $N$ and $C$ make up an $n$-length simple circuit, which by $P(n)$ implies that $\exists$ distinct $X,Y,Z \in V,
+              X \sim Y \wedge Y \sim Z \wedge Z \sim X$.\\
+We need to make sure, however, that $X,Y,Z$ all correspond to snooze sessions in $G$, and thus to our five mathematicians.
+
+Case 1. $N \not= X \wedge N \not= Y \wedge N \not= Z \Rightarrow
+        X,Y,Z \in V_G$
+
+Case 2. Without loss of generality, let $X = N$.\\
+        $Y \sim N \Rightarrow Y \sim L \vee Y \sim M$\\
+        Similarly, $Z \sim N \rightarrow Z \sim L \vee Z \sim M$.
+
+Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
+
+Thus, there is some point when three mathematicians are all sleeping at the same time.
+
+
+\end{document}
