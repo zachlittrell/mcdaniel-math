@@ -70,7 +70,7 @@ Inductive Case: Let $n \geq 2$\\
 Assume Theorem 1 is true for all $x$ such that $1 \leq x \leq n$\\
 Choose a vertex $v$ in $G$.\\
 Since $G$ has no circuits, and there must be at least one edge extending from each vertex, we can follow a path of edges extending from $v$ until we arrive at a vertex, $l$,  with no other edge besides the one used to get to it (otherwise, we could loop back to a vertex we've visited before and get a simple circuit).\\
-If we remove $l$, and its edge from $G$, to create a new graph called $G'$, we still have a connected graph with no circuits and now with $n$ vertices. By our inductive hypothesis, $G'$ has $n-1$ edges $Rightarrow$ $G$ has $n$ edges.
+If we remove $l$, and its edge from $G$, to create a new graph called $G'$, we still have a connected graph with no circuits and now with $n$ vertices. By our inductive hypothesis, $G'$ has $n-1$ edges $\Rightarrow$ $G$ has $n$ edges.
 
 Thus, Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true for all $n$.
  
