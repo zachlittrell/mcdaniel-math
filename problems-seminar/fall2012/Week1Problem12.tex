@@ -25,12 +25,9 @@ First, we are going to construct an undirected graph $G$.
   \item For each mathematician, $M$, make two vertices, one for each
         time $M$ takes a snooze. We'll denote these snooze sessions
         as $M_1$ and $M_2$.
-  \item Two vertices share an edge iff the snooze sessions the vertices
-        represent overlap.
-  \item Clearly, given a vertex $v$, $v$ does not share an edge with
+  \item Two distinct vertices share an edge iff the snooze sessions the        vertices represent overlap.
+  \item Given a vertex $v$, $v$ does not share an edge with
         itself.
-  \item Clearly, given a mathematician $M$, $M_1$ does not share an
-        edge with $M_2$.
 \end{enumerate}
 
 \textbf{Definitions}
@@ -46,7 +43,9 @@ First, we are going to construct an undirected graph $G$.
   \item \textbf{$\oslash$} For two Snooze Vertices, $v$ and $w$,
                            we define $v \oslash w$ as a Snooze Vertex
                            that represents the span of time where
-                           $time(v)$ and $time(w)$ overlaps.
+                           $time(v)$ and $time(w)$ overlaps.\\
+                           If $time(v)$ and $time(w)$ do not overlap,
+                           then $v \oslash w = null time$.
   \item \textbf{$\oplus$}  For two Snooze Vertices, $v$ and $w$,
                            we define $v \oplus w$ as a Snooze Vertex
                            that represents $time(v)$ and $time(w)$
@@ -54,8 +53,8 @@ First, we are going to construct an undirected graph $G$.
   \item \textbf{$\circledast$} For two Snooze Vertices, $v$ and $w$,
                                we defined $v \circledast w$ to be true
                                if $time(v)$ and $time(w)$ overlap.
-                               If $time(v)$ or $time(w)$ are 0-length
-                               spans of time, then $v \circledast w$
+                               If $time(v)$ or $time(w)$ are 
+                               $null time$ then $v \circledast w$
                                is false.
 \end{itemize}
 
@@ -148,7 +147,7 @@ Let $\lbrace L,M \rbrace$ = the first two vertices in $C$.\\
 Let $R$ = the vertices after $L$ and $M$ in $C$.\\
 By the definition of $C$, $L \circledast M$\\
 Let $N$ = $L \oplus M$.
-Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2-4 that we used for $G$.\\
+Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2 and 3 that we used for $G$.\\
 Clearly, all Snooze Vertices that overlapped with $L$ or $M$ overlap with $N$ as well.\\
 So, $N$ and $R$ make up an $n$-length simple circuit, which by $P(n)$ implies that\\
 $\exists$ distinct $X,Y,Z \in V_{G'},
@@ -164,8 +163,8 @@ Cases
 
   \item Without loss of generality, let $X = N$.\\
         Which means $(L \oplus M) \circledast (Y \oslash Z) \Rightarrow$\\
-        So, there is some span of time where $Y \oslash Z$ overlaps
-        with either $L$ or $M$, or both.\\
+        So, there is some span of time where $time(Y \oslash Z)$ 
+        overlaps with either $time(L)$ or $time(M)$, or both.\\
         From this, we can get our triplet of vertices.
 \end{enumerate}
 Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
