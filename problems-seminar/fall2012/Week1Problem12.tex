@@ -88,6 +88,7 @@ So Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true
 By the contrapositive of Theorem 1, we can deduce that $G$ has at least one simple circuit.
 
 Now, we'd like to prove the following proposition:\\
+For a graph, $G$\\
 $P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$, then $\exists$ distinct $ L,M,N \in C,
                         L \sim M \wedge M \sim N \wedge L \sim N$.\\
 where $n \geq 3$.
@@ -108,17 +109,29 @@ Let $N$ = a new vertex for the spans of time represented by $L$ and $M$ combined
 Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2-4 that we used for $G$.\\
 Clearly, $\forall v \in V_G, v \in V_{G'} \wedge (v \sim L \vee v \sim M)
           \Rightarrow v \sim N$.\\
-So, $N$ and $C$ make up an $n$-length simple circuit, which by $P(n)$ implies that $\exists$ distinct $X,Y,Z \in V,
-              X \sim Y \wedge Y \sim Z \wedge Z \sim X$.\\
-We need to make sure, however, that $X,Y,Z$ all correspond to snooze sessions in $G$, and thus to our five mathematicians.
+So, $N$ and $C$ make up an $n$-length simple circuit, which by $P(n)$ implies that $\exists$ distinct $X,Y,Z \in V_{G'},
+              X \sim Y \wedge Y \sim Z \wedge Z \sim X$.
 
-Case 1. $N \not= X \wedge N \not= Y \wedge N \not= Z \Rightarrow
-        X,Y,Z \in V_G$
+Now, using $X,Y,Z$, we need to find three vertices in $V_G$ that are similar interconnecting.
 
-Case 2. Without loss of generality, let $X = N$.\\
+Cases
+\begin{enumerate}
+  \item $N \not= X \wedge N \not= Y \wedge N \not= Z \Rightarrow
+        X,Y,Z \in V_G$,\\
+        so $X,Y,Z$ form the triplet we're looking for.
+
+  \item Without loss of generality, let $X = N$.\\
         $Y \sim N \Rightarrow Y \sim L \vee Y \sim M$\\
-        Similarly, $Z \sim N \Rightarrow Z \sim L \vee Z \sim M$.
-
+        Similarly, $Z \sim N \Rightarrow Z \sim L \vee Z \sim M$\\
+        Cases
+        \begin{enumerate}
+          \item $Y \sim L \wedge Z \sim L \Rightarrow
+                Y$,$L$,$Z$ form the triplet we're looking for.
+          \item $Y \sim M \wedge Z \sim M \Rightarrow
+                Y$,$M$,$Z$ form the triplet we're looking for.
+          \item $Y \sim L \wedge Z \sim M \Rightarrow$
+        \end{enumerate}
+\end{enumerate}
 Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
 
 Thus, there is some point when three mathematicians are all sleeping at the same time.
