@@ -34,23 +34,57 @@ First, we are going to construct an undirected graph $G$.
         edge with $M_2$.
 \end{enumerate}
 
-To solve our problem, it suffices to show that there are 3 vertices in our graph $G$ who each share an edge with one another.
-
 \textbf{Definitions}
 \begin{itemize}
-  \item \textbf{$\sim$} For two vertices, $v$ and $w$, we define $v \sim w$
-                to be true when $v$ shares an edge with $w$.\\
-                Note, clearly $\sim$ is symmetrical.
   \item \textbf{Simple Circuit}  A sequence of distinct vertices make a 
                         simple circuit if you can traverse along
                         all the vertices in order and 
                         return to the first vertex.
   \item \textbf{$V_G$} The vertices in graph $G$.
+  \item \textbf{Snooze Vertex} A vertex that represents a span of time.
+  \item \textbf{$time(v)$} The span of time Snooze Vertex $v$ 
+                           represents.
+  \item \textbf{$\oslash$} For two Snooze Vertices, $v$ and $w$,
+                           we define $v \oslash w$ as a Snooze Vertex
+                           that represents the span of time where
+                           $time(v)$ and $time(w)$ overlaps.
+  \item \textbf{$\oplus$}  For two Snooze Vertices, $v$ and $w$,
+                           we define $v \oplus w$ as a Snooze Vertex
+                           that represents $time(v)$ and $time(w)$
+                           combined. 
+  \item \textbf{$\circledast$} For two Snooze Vertices, $v$ and $w$,
+                               we defined $v \circledast w$ to be true
+                               if $time(v)$ and $time(w)$ overlap.
 \end{itemize}
+
+\textbf{Axioms}
+\begin{enumerate}
+  \item Clearly, $\oslash$ is commutative.
+  \item Clearly, $\oplus$ is commutative.
+  \item Clearly, $\circledast$ is symmetrical.
+\end{enumerate}
+
+\textbf{Lemmas}
+\begin{enumerate}
+  \item Given three snooze vertices, $v$,$w$, and $x$,\\
+        $v \circledast w \wedge 
+         v \circledast x \wedge 
+         x \circledast w \Rightarrow 
+         v \circledast (x \oslash w)$.
+
+        Proof:\\
+        Suppose the contrary is true.\\
+        Then there is $time(v)$ overlaps with $time(w)$,
+        and there's a $time(x)$ overlaps with $time(w)$ as well.\\
+        We also know that $time(v)$ overlaps with $time(x)$.\\
+        But, since $\neg(v \circledast (x \oslash w))$, then
+        $v$'s snooze session would have to pause during
+        $time(x \oslash w) \Rightarrow \Leftarrow$.
+\end{enumerate}
 
 From how we construct our graph, we know there are 10 vertices.
 
-Since we have 5 mathematicians, by Fact 2, for every pair of distinct mathematicians, $M$ and $N$, there must exist $i,j \in \lbrace 1,2 \rbrace$ such that $M_i \sim N_j$.
+Since we have 5 mathematicians, by Fact 2, for every pair of distinct mathematicians, $M$ and $N$, there must exist $i,j \in \lbrace 1,2 \rbrace$ such that $M_i \circledast N_j$.
 
 So, the number of edges in our graph must be at least ${5 \choose 2} = 10$.
 
@@ -87,30 +121,36 @@ So Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true
  
 By the contrapositive of Theorem 1, we can deduce that $G$ has at least one simple circuit.
 
-Now, we'd like to prove the following proposition:\\
+To solve our problem, we'd like to find that regardless of how long the simple circuit in $G$ is, we can find three Snooze Vertices that overlap with one another.\\
+So, it suffices to prove the following proposition:\\
 For a graph, $G$\\
-$P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$, then $\exists$ distinct $ L,M,N \in C,
-                        L \sim M \wedge M \sim N \wedge L \sim N$.\\
+$P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$,\\ then $\exists$ distinct $ L,M,N \in C,
+                       M \circledast N \wedge
+                       L \circledast (M \oslash N)$ .\\
 where $n \geq 3$.
 
 Proof of $P$ by induction on $n$
 
 Base Case: Let $n = 3$\\
 Let $\lbrace L, M, N \rbrace$ be the sequence of vertices who make up a 3-length simple circuit in $V_G \Rightarrow\\
-L \sim M \wedge M \sim N \wedge N \wedge L$.
+L \circledast M \wedge M \circledast N \wedge N \circledast L$.\\
+By Lemma 1, $L \circledast (M \oslash N)$.
 
 Inductive Case: Let $n \geq 3$\\
 Assume $P(n)$ is true.\\
 Let $C$ be a sequence of vertices who make up an $n+1$-length simple circuit in $V_G$.\\
 Let $\lbrace L,M \rbrace$ = the first two vertices in $C$.\\
 Let $R$ = the vertices after $L$ and $M$ in $C$.\\
-By the definition of $C$, $L \sim M \Rightarrow$\\
-Let $N$ = a new vertex for the spans of time represented by $L$ and $M$ combined.\\
+By the definition of $C$, $L \circledast M$\\
+Let $N$ = $L \oplus M$.
 Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2-4 that we used for $G$.\\
-Clearly, $\forall v \in V_G, v \in V_{G'} \wedge (v \sim L \vee v \sim M)
-          \Rightarrow v \sim N$.\\
-So, $N$ and $C$ make up an $n$-length simple circuit, which by $P(n)$ implies that $\exists$ distinct $X,Y,Z \in V_{G'},
-              X \sim Y \wedge Y \sim Z \wedge Z \sim X$.
+Clearly, $\forall v \in V_G, v \in V_{G'} \wedge 
+                             (v \circledast L \vee v \circledast M)
+          \Rightarrow v \circledast N$.\\
+So, $N$ and $C$ make up an $n$-length simple circuit, which by $P(n)$ implies that\\
+$\exists$ distinct $X,Y,Z \in V_{G'},
+              Y \circledast Z \wedge
+              X \circledast (Y \oslash Z)$
 
 Now, using $X,Y,Z$, we need to find three vertices in $V_G$ that are similar interconnecting.
 
@@ -121,16 +161,10 @@ Cases
         so $X,Y,Z$ form the triplet we're looking for.
 
   \item Without loss of generality, let $X = N$.\\
-        $Y \sim N \Rightarrow Y \sim L \vee Y \sim M$\\
-        Similarly, $Z \sim N \Rightarrow Z \sim L \vee Z \sim M$\\
-        Cases
-        \begin{enumerate}
-          \item $Y \sim L \wedge Z \sim L \Rightarrow
-                Y$,$L$,$Z$ form the triplet we're looking for.
-          \item $Y \sim M \wedge Z \sim M \Rightarrow
-                Y$,$M$,$Z$ form the triplet we're looking for.
-          \item $Y \sim L \wedge Z \sim M \Rightarrow$
-        \end{enumerate}
+        Which means $(L \oplus M) \circledast (Y \oslash Z) \Rightarrow$\\
+        So, there is some span of time where $Y \oslash Z$ with
+        either $L$ or $M$, or both.\\
+        From this, we can get our triplet of vertices.
 \end{enumerate}
 Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
 
