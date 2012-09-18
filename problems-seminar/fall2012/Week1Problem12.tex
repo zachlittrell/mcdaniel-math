@@ -1,7 +1,6 @@
 \documentclass[fleqn]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage{tikz}
 \usepackage[parfill]{parskip}
 \usepackage[vmargin=0.5cm]{geometry}
 \setlength\parindent{0pt}
@@ -55,24 +54,21 @@ First, we are going to construct an undirected graph $G$.
   \item \textbf{$\circledast$} For two Snooze Vertices, $v$ and $w$,
                                we defined $v \circledast w$ to be true
                                if $time(v)$ and $time(w)$ overlap.
+                               If $time(v)$ or $time(w)$ are 0-length
+                               spans of time, then $v \circledast w$
+                               is false.
 \end{itemize}
 
-\textbf{Axioms}
-\begin{enumerate}
-  \item Clearly, $\oslash$ is commutative.
-  \item Clearly, $\oplus$ is commutative.
-  \item Clearly, $\circledast$ is symmetrical.
-\end{enumerate}
-
-\textbf{Lemmas}
+\textbf{Properties}
 \begin{enumerate}
   \item Given three snooze vertices, $v$,$w$, and $x$,\\
         $v \circledast w \wedge 
          v \circledast x \wedge 
-         x \circledast w \Rightarrow 
+         x \circledast w \Leftrightarrow 
          v \circledast (x \oslash w)$.
 
         Proof:\\
+        $\Rightarrow$\\
         Suppose the contrary is true.\\
         Then there is $time(v)$ overlaps with $time(w)$,
         and there's a $time(x)$ overlaps with $time(w)$ as well.\\
@@ -81,6 +77,13 @@ First, we are going to construct an undirected graph $G$.
         $v$ doesn't overlap with both or either, or 
         $v$'s snooze session would have to pause during
         $time(x \oslash w) \Rightarrow \Leftarrow$.
+
+         $\Leftarrow$\\
+         If $time(v)$ overlaps where $time(x)$ overlaps with $time(w)$,
+         then clearly span of time overlaps with each  other.
+  \item Clearly, $\oslash$ is commutative.
+  \item Clearly, $\oplus$ is commutative.
+  \item Clearly, $\circledast$ is symmetrical.
 \end{enumerate}
 
 From how we construct our graph, we know there are 10 vertices.
@@ -126,7 +129,6 @@ To solve our problem, we'd like to find that regardless of how long the simple c
 So, it suffices to prove the following proposition:\\
 For a graph, $G$\\
 $P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$,\\ then $\exists$ distinct $ L,M,N \in C,
-                       M \circledast N \wedge
                        L \circledast (M \oslash N)$ .\\
 where $n \geq 3$.
 
@@ -135,7 +137,7 @@ Proof of $P$ by induction on $n$
 Base Case: Let $n = 3$\\
 Let $\lbrace L, M, N \rbrace$ be the sequence of vertices who make up a 3-length simple circuit in $V_G \Rightarrow\\
 L \circledast M \wedge M \circledast N \wedge N \circledast L$.\\
-By Lemma 1, $L \circledast (M \oslash N)$.
+By Property 1, $L \circledast (M \oslash N)$.
 
 Inductive Case: Let $n \geq 3$\\
 Assume $P(n)$ is true.\\
@@ -163,8 +165,8 @@ Cases
 
   \item Without loss of generality, let $X = N$.\\
         Which means $(L \oplus M) \circledast (Y \oslash Z) \Rightarrow$\\
-        So, there is some span of time where $Y \oslash Z$ with
-        either $L$ or $M$, or both.\\
+        So, there is some span of time where $Y \oslash Z$ overlaps
+        with either $L$ or $M$, or both.\\
         From this, we can get our triplet of vertices.
 \end{enumerate}
 Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
