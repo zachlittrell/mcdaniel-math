@@ -149,12 +149,9 @@ Let $R$ = the vertices after $L$ and $M$ in $C$.\\
 By the definition of $C$, $L \circledast M$\\
 Let $N$ = $L \oplus M$.
 Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2-4 that we used for $G$.\\
-Clearly, $\forall v \in V_G, v \in V_{G'} \wedge 
-                             (v \circledast L \vee v \circledast M)
-          \Rightarrow v \circledast N$.\\
+Clearly, all Snooze Vertices that overlapped with $L$ or $M$ overlap with $N$ as well.\\
 So, $N$ and $R$ make up an $n$-length simple circuit, which by $P(n)$ implies that\\
 $\exists$ distinct $X,Y,Z \in V_{G'},
-              Y \circledast Z \wedge
               X \circledast (Y \oslash Z)$
 
 Now, using $X,Y,Z$, we need to find three vertices in $V_G$ that are similar interconnecting.
