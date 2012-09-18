@@ -116,7 +116,7 @@ We then create a graph, $G'$, with $v$ removed.\\
 Obviously, $G'$ also has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges, which means $G$ also has at most $n-1$ edges.
 
 Case 2. $v$ has at least one edge.\\
-Since $G$ has no circuits, we can follow a path of edges from $v$ until we arrive at a vertex, $l$ with no other edge besides the one used to get to it (if this was not the case, we could either find an infinite number of vertices, but $G$ is finite, or end up at a vertex we visited before, thus creating a simple circuit).\\
+Since $G$ has no circuits, we can follow a path of edges from $v$ until we arrive at a vertex, $l$ with no other edge besides the one used to get to it (if this was not the case, we could either find an infinite number of distinct vertices, but $G$ is finite, or end up at a vertex we visited before, thus creating a simple circuit).\\
 We then create a graph called $G'$ with $l$ and its edge removed.
 \\Clearly, $G'$ has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges. So $G$ has at most $n-1+1=n$ edges.
 
