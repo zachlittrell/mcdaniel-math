@@ -34,7 +34,7 @@ We want to show there is a point where three mathematicians are all sleeping at 
                          $\triple{snoozer_1}{start_1}{end_1}$ and
                          $\triple{snoozer_2}{start_2}{end_2}$, we define
                          $\triple{snoozer_1}{start_1}{end_1} \iunion
-                          \triple{snoozer_2}{start_2}{end_2}$ as
+                          \triple{snoozer_2}{start_2}{end_2}$ as \\
                          $\triple{snoozer_1 and snoozer_2}
                                  {min(start_1, start_2)}
                                  {max(end_1,end_2)}$.
@@ -44,8 +44,8 @@ We want to show there is a point where three mathematicians are all sleeping at 
                          $\triple{snoozer_2}{start_2}{end_2}$, we define
                          $\triple{snoozer_1}{start_1}{end_1} \ioverlap
                           \triple{snoozer_2}{start_2}{end_2}$ as being true
-                         when $start_1 \leq end_2 \leq end_1$ or
-                              $start_1 \leq start_2 \leq end_1$.
+                         when\\ $start_1 \leq end_2 \leq end_1$ or
+                                $start_1 \leq start_2 \leq end_1$.
 
   \item \textbf{$\iinter$}
     For two Snooze Intervals,
@@ -62,6 +62,22 @@ We want to show there is a point where three mathematicians are all sleeping at 
                                    {min(start_2,end_1)} &
            \text{if } start_1 \leq start_2 \leq end_1
        \end{cases}$
+  \item \textbf{Chain} A sequence of distinct Snooze Intervals $\lbrace s_i \rbrace$ is a chain if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_n \ioverlap s_1$.
+\end{itemize}
+
+\textbf{Properties}
+\begin{enumerate}
+  \item $s_1 \ioverlap s_2 \wedge
+         s_2 \ioverlap s_3 \wedge
+         s_3 \ioverlap s_1 \Rightarrow
+         s_1 \ioverlap (s_2 \iinter s_3)$
+
+        \underline{Proof}
+        Suppose the contrary.\\
+        $s_1 \not\ioverlap (s_2 \iinter s_3).$
+   \item Clearly, $\iunion$ is commutative.
+   \item Clearly, $\iinter$ is commutative.
+   \item Clearly, $\ioverlap$ is symmetric.
 \end{itemize}
 
 
