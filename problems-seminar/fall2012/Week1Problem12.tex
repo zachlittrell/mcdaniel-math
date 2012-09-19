@@ -5,6 +5,12 @@
 \usepackage[vmargin=0.5cm]{geometry}
 \setlength\parindent{0pt}
 \setlength{\mathindent}{0pt}
+
+\newcommand{\triple}[3]{\langle #1,#2,#3 \rangle}
+\newcommand{\iunion}{\oplus}
+\newcommand{\iinter}{\oslash}
+\newcommand{\ioverlap}{\perp}
+
 \begin{document}
 There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Simonelli.
 
@@ -18,158 +24,45 @@ There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Si
 
 We want to show there is a point where three mathematicians are all sleeping at the same time.
 
-First, we are going to construct an undirected graph $G$.
-
-\textbf{Rules for constructing $G$}:
-\begin{enumerate}
-  \item For each mathematician, $M$, make two vertices, one for each
-        time $M$ takes a snooze. We'll denote these snooze sessions
-        as $M_1$ and $M_2$.
-  \item Two distinct vertices share an edge iff the snooze sessions the        vertices represent overlap.
-  \item Given a vertex $v$, $v$ does not share an edge with
-        itself.
-\end{enumerate}
-
 \textbf{Definitions}
 \begin{itemize}
-  \item \textbf{Simple Circuit}  A sequence of distinct vertices make a 
-                        simple circuit if you can traverse along
-                        all the vertices in order and 
-                        return to the first vertex.
-  \item \textbf{$V_G$} The vertices in graph $G$.
-  \item \textbf{Snooze Vertex} A vertex that represents a span of time.
-  \item \textbf{$time(v)$} The span of time Snooze Vertex $v$ 
-                           represents.
-  \item \textbf{$\oslash$} For two Snooze Vertices, $v$ and $w$,
-                           we define $v \oslash w$ as a Snooze Vertex
-                           that represents the span of time where
-                           $time(v)$ and $time(w)$ overlaps.\\
-                           If $time(v)$ and $time(w)$ do not overlap,
-                           then $v \oslash w = null time$.
-  \item \textbf{$\oplus$}  For two Snooze Vertices, $v$ and $w$,
-                           we define $v \oplus w$ as a Snooze Vertex
-                           that represents $time(v)$ and $time(w)$
-                           combined. 
-  \item \textbf{$\circledast$} For two Snooze Vertices, $v$ and $w$,
-                               we defined $v \circledast w$ to be true
-                               if $time(v)$ and $time(w)$ overlap.
-                               If $time(v)$ or $time(w)$ are 
-                               $null time$ then $v \circledast w$
-                               is false.
+  \item \textbf{$M$} The set $\lbrace$ Hamblen, Ko, More, Naumov, and Simonelli $\rbrace$
+  \item \textbf{Snooze Interval} A Snooze Interval is a triplet of
+        the form $\triple{snoozer}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $snoozer$ is the identifier of who was snoozing.
+  \item \textbf{$S$} The set of Snooze Intervals for each time each mathematician, $\mu$, in $M$, took a snooze.
+  \item \textbf{$\iunion$} For two Snooze Intervals,
+                         $\triple{snoozer_1}{start_1}{end_1}$ and
+                         $\triple{snoozer_2}{start_2}{end_2}$, we define
+                         $\triple{snoozer_1}{start_1}{end_1} \iunion
+                          \triple{snoozer_2}{start_2}{end_2}$ as
+                         $\triple{snoozer_1 and snoozer_2}
+                                 {min(start_1, start_2)}
+                                 {max(end_1,end_2)}$.
+
+  \item \textbf{$\ioverlap$} For two Snooze Intervals,
+                         $\triple{snoozer_1}{start_1}{end_1}$ and
+                         $\triple{snoozer_2}{start_2}{end_2}$, we define
+                         $\triple{snoozer_1}{start_1}{end_1} \ioverlap
+                          \triple{snoozer_2}{start_2}{end_2}$ as being true
+                         when $start_1 \leq end_2 \leq end_1$ or
+                              $start_1 \leq start_2 \leq end_1$.
+
+  \item \textbf{$\iinter$}
+    For two Snooze Intervals,
+    $s_1=\triple{snoozer_1}{start_1}{end_1}$ and
+    $s_2=\triple{snoozer_2}{start_2}{end_2}$, we define
+    $s_1 \iinter s_2 =
+       \begin{cases}
+         \triple{snoozer_1 over snoozer_2}{\infty}{\infty} &
+           \text{if } s_1 \not\ioverlap s_2\\
+         \triple{snoozer_1 over snoozer_2}{max(start_1,end_2)}
+                                          {min(end_2, end_1)} &
+           \text{if } start_1 \leq end_2 \leq end_1\\
+         \triple{snoozer_1 over snoozer_2}{max(start_1,start_2)}
+                                   {min(start_2,end_1)} &
+           \text{if } start_1 \leq start_2 \leq end_1
+       \end{cases}$
 \end{itemize}
-
-\textbf{Properties}
-\begin{enumerate}
-  \item Given three snooze vertices, $v$,$w$, and $x$,\\
-        $v \circledast w \wedge 
-         v \circledast x \wedge 
-         x \circledast w \Leftrightarrow 
-         v \circledast (x \oslash w)$.
-
-        \underline{Proof}:\\
-        $\Rightarrow$\\
-        Suppose the contrary is true.\\
-        Then there is $time(v)$ overlaps with $time(w)$,
-        and there's a $time(x)$ overlaps with $time(w)$ as well.\\
-        We also know that $time(v)$ overlaps with $time(x)$.\\
-        But, since $\neg(v \circledast (x \oslash w))$, then either
-        $v$ doesn't overlap with both or either, or 
-        $v$'s snooze session would have to pause during
-        $time(x \oslash w) \Rightarrow \Leftarrow$.
-
-         $\Leftarrow$\\
-         If $time(v)$ overlaps where $time(x)$ overlaps with $time(w)$,
-         then clearly each span of time overlaps with each  other.
-  \item Clearly, $\oslash$ is commutative.
-  \item Clearly, $\oplus$ is commutative.
-  \item Clearly, $\circledast$ is symmetrical.
-\end{enumerate}
-
-From how we construct our graph, we know there are 10 vertices.
-
-Since we have 5 mathematicians, by Fact 2, for every pair of distinct mathematicians, $M$ and $N$, there must exist $i,j \in \lbrace 1,2 \rbrace$ such that $M_i \circledast N_j$.
-
-So, the number of edges in our graph must be at least ${5 \choose 2} = 10$.
-
-First, we're going to define and prove the following theorem:
-
-\begin{itemize}
-\item
-\textbf{Theorem 1}\\
-If graph $G$ has $n$ vertices and no simple circuits,
-then $G$ has at most $n-1$ edges.
-
-\underline{Proof of Theorem 1 by Induction on $n$:}
-
-Base Case: Let $n = 1$.\\
-Then there are 0 edges, thus Theorem 1 works for $n=1$.
-
-Inductive Case: Let $n \geq 1$\\
-Assume Theorem 1 is true for all $x$ such that $1 \leq x \leq n$
-
-Let $G$ be a graph with $n+1$ vertices.\\
-We want to show that $G$ has at most $n$ edges.
-
-Choose a vertex $v$ in $G$.
-
-Case 1. $v$ has no edges.\\
-We then create a copy of $G$ called $G'$, with $v$ removed.\\
-Obviously, $G'$ also has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges, which means $G$ also has at most $n-1$ edges.
-
-Case 2. $v$ has at least one edge.\\
-Since $G$ has no circuits, we can follow a path of edges from $v$ until we arrive at a vertex, $l$ with no other edge besides the one used to get to it (if this was not the case, we could either find an infinite number of distinct vertices, but $G$ is finite, or end up at a vertex we visited before, thus creating a simple circuit).\\
-We then create a copy of $G$ called $G'$ with $l$ and its edge removed.
-\\Clearly, $G'$ has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges. So $G$ has at most $n-1+1=n$ edges.
-
-
-So Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true for all $n$.
-\end{itemize} 
-By the contrapositive of Theorem 1, we can deduce that $G$ has at least one simple circuit.
-
-To solve our problem, we'd like to find that regardless of how long the simple circuit in $G$ is, we can find three Snooze Vertices that overlap with one another.\\
-So, it suffices to prove the following proposition:\\
-For a graph, $G$\\
-$P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$,\\ then $\exists$ distinct $ L,M,N \in C,
-                       L \circledast (M \oslash N)$ .\\
-where $n \geq 3$.
-
-\underline{Proof of $P$ by induction on $n$}
-
-Base Case: Let $n = 3$\\
-Let $\lbrace L, M, N \rbrace$ be the sequence of vertices who make up a 3-length simple circuit in $V_G \Rightarrow\\
-L \circledast M \wedge M \circledast N \wedge N \circledast L$.\\
-By Property 1, $L \circledast (M \oslash N)$.
-
-Inductive Case: Let $n \geq 3$\\
-Assume $P(n)$ is true.\\
-Let $C$ be a sequence of vertices who make up an $n+1$-length simple circuit in $V_G$.\\
-Let $\lbrace L,M \rbrace$ = the first two vertices in $C$.\\
-Let $R$ = the vertices after $L$ and $M$ in $C$.\\
-By the definition of $C$, $L \circledast M$\\
-Let $N$ = $L \oplus M$.
-Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2 and 3 that we used for $G$.\\
-Clearly, all Snooze Vertices that overlapped with $L$ or $M$ overlap with $N$ as well.\\
-So, $N$ and $R$ make up an $n$-length simple circuit, which by $P(n)$ implies that\\
-$\exists$ distinct $X,Y,Z \in V_{G'},
-              X \circledast (Y \oslash Z)$
-
-Now, using $X,Y,Z$, we need to find three vertices in $V_G$ that are similar interconnecting.
-
-Cases
-\begin{enumerate}
-  \item $N \not= X \wedge N \not= Y \wedge N \not= Z \Rightarrow
-        X,Y,Z \in V_G$,\\
-        so $X,Y,Z$ form the triplet we're looking for.
-
-  \item Without loss of generality, let $X = N$.\\
-        Which means $(L \oplus M) \circledast (Y \oslash Z) \Rightarrow$\\
-        So, there is some span of time where $time(Y \oslash Z)$ 
-        overlaps with either $time(L)$ or $time(M)$, or both.\\
-        From this, we can get our triplet of vertices.
-\end{enumerate}
-Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
-
-Thus, there is some point when three mathematicians are all sleeping at the same time.
 
 
 \end{document}
