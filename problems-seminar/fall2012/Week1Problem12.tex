@@ -1,15 +1,32 @@
 \documentclass[fleqn]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{tikz}
 \usepackage[parfill]{parskip}
 \usepackage[vmargin=0.5cm]{geometry}
 \setlength\parindent{0pt}
 \setlength{\mathindent}{0pt}
 
+%macros
+
 \newcommand{\triple}[3]{\langle #1,#2,#3 \rangle}
+\newcommand{\set}[1]{\lbrace #1 \rbrace}
+\newcommand{\buildset}[2]{\set{#1 | #2}}
 \newcommand{\iunion}{\oplus}
 \newcommand{\iinter}{\oslash}
 \newcommand{\ioverlap}{\perp}
+
+%tikz macros
+\newcommand{\interval}[4]{
+  \draw (#2,#3) node[]{} --(#2+#4,#3) node[]{};
+  }
+
+\newcommand{\intervalpic}[1]{
+  \begin{tikzpicture}
+    [scale=.8,auto=left,line width=0.1cm,blue!20,every node/.style={circle,minimum size=0.25cm,fill=blue!20}]
+    #1
+  \end{tikzpicture}
+}
 
 \begin{document}
 There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Simonelli.
@@ -26,7 +43,7 @@ We want to show there is a point where three mathematicians are all sleeping at 
 
 \textbf{Definitions}
 \begin{itemize}
-  \item \textbf{$M$} The set $\lbrace$ Hamblen, Ko, More, Naumov, and Simonelli $\rbrace$
+  \item \textbf{$M$} The set $\set{$Hamblen, Ko, More, Naumov, and Simonelli$}$
   \item \textbf{Snooze Interval} A Snooze Interval is a triplet of
         the form $\triple{snoozer}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $snoozer$ is the identifier of who was snoozing.
   \item \textbf{$S$} The set of Snooze Intervals for each time each mathematician, $\mu$, in $M$, took a snooze.
@@ -44,7 +61,7 @@ We want to show there is a point where three mathematicians are all sleeping at 
                          $\triple{snoozer_2}{start_2}{end_2}$, we define
                          $\triple{snoozer_1}{start_1}{end_1} \ioverlap
                           \triple{snoozer_2}{start_2}{end_2}$ as being true
-                         when\\ $start_1 \leq end_2 \leq end_1$ or
+                         when\\$snoozer_1 \not= snoozer_2$ and $start_1 \leq end_2 \leq end_1$ or
                                 $start_1 \leq start_2 \leq end_1$.
 
   \item \textbf{$\iinter$}
@@ -78,7 +95,7 @@ We want to show there is a point where three mathematicians are all sleeping at 
    \item Clearly, $\iunion$ is commutative.
    \item Clearly, $\iinter$ is commutative.
    \item Clearly, $\ioverlap$ is symmetric.
-\end{itemize}
+\end{enumerate}
 
 
 \end{document}
