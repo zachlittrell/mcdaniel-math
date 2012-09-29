@@ -16,7 +16,7 @@ To do this, we need to implement the powerset function.
 > powerset = powerset' [[]]
 
 We will construct the powerset of list recursively,
-every iteration adding more subsets of result, starting with result 
+every iteration adding more subsets of list, starting with result 
 just containing the empty set. We will construct these subsets 
 by removing elements one by one from our list.
 
@@ -86,6 +86,4 @@ This we can simply do by comparing their lengths.
 Then we combine the three functions we have constructed to
 find the answer to our problem.
 
-> main = print $ longestSubset . 
->                noSquareProducts . 
->                powerset $ list
+> main = print $ longestSubset (noSquareProducts (powerset list))
