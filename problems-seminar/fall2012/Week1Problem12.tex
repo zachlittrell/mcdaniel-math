@@ -17,13 +17,14 @@
 \newcommand{\ioverlap}{\perp}
 
 %tikz macros
-\newcommand{\interval}[4]{
-  \draw (#2,#3) node[]{} --(#2+#4,#3) node[]{};
+\newcommand{\interval}[5]{
+  \draw (#2,#3) node[]{} -- (#4,#3) node[]{};
+  \draw (#5,#3) node[minimum size=0.1cm,draw=none,fill=none,color=black]{#1};
   }
 
-\newcommand{\intervalpic}[1]{
+\newcommand{\intervals}[1]{
   \begin{tikzpicture}
-    [scale=.8,auto=left,line width=0.1cm,blue!20,every node/.style={circle,minimum size=0.25cm,fill=blue!20}]
+    [line width=0.1cm,blue!20,every node/.style={circle,minimum size=0.25cm,fill=blue!20}]
     #1
   \end{tikzpicture}
 }
@@ -45,7 +46,10 @@ We want to show there is a point where three mathematicians are all sleeping at 
 \begin{itemize}
   \item \textbf{$M$} The set $\set{$Hamblen, Ko, More, Naumov, and Simonelli$}$
   \item \textbf{Snooze Interval} A Snooze Interval is a triplet of
-        the form $\triple{snoozer}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $snoozer$ is the identifier of who was snoozing.
+        the form $\triple{snoozer}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $snoozer$ is the identifier of who was snoozing.\\
+        \intervals{
+          \interval{$\triple{snoozer}{start}{end}$}{0}{0}{3}{5.5}
+        }
   \item \textbf{$S$} The set of Snooze Intervals for each time each mathematician, $\mu$, in $M$, took a snooze.
   \item \textbf{$\iunion$} For two Snooze Intervals,
                          $\triple{snoozer_1}{start_1}{end_1}$ and
@@ -79,22 +83,35 @@ We want to show there is a point where three mathematicians are all sleeping at 
                                    {min(start_2,end_1)} &
            \text{if } start_1 \leq start_2 \leq end_1
        \end{cases}$
-  \item \textbf{Chain} A sequence of distinct Snooze Intervals $\lbrace s_i \rbrace$ is a chain if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_n \ioverlap s_1$.
+  \item \textbf{Cycle} A sequence of distinct Snooze Intervals $\lbrace s_i \rbrace$ is a cycle if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_n \ioverlap s_1$.
+        
+        \intervals{
+          
+        }
 \end{itemize}
 
 \textbf{Properties}
 \begin{enumerate}
-  \item $s_1 \ioverlap s_2 \wedge
-         s_2 \ioverlap s_3 \wedge
-         s_3 \ioverlap s_1 \Rightarrow
-         s_1 \ioverlap (s_2 \iinter s_3)$
-
-        \underline{Proof}
-        Suppose the contrary.\\
-        $s_1 \not\ioverlap (s_2 \iinter s_3).$
    \item Clearly, $\iunion$ is commutative.
    \item Clearly, $\iinter$ is commutative.
    \item Clearly, $\ioverlap$ is symmetric.
+   \item $s_1 \ioverlap s_2 \wedge
+          s_2 \ioverlap s_3 \wedge
+          s_3 \ioverlap s_1 \Rightarrow
+          s_1 \ioverlap (s_2 \iinter s_3)$
+
+         \intervals{
+           \interval{\textbf{$s_1$}}{0.5}{3}{2.75}{4}
+           \interval{\textbf{$s_2$}}{1.75}{2}{3}{4}
+           \interval{\textbf{$s_3$}}{1}{1}{2.5}{4}
+         }
+
+         \underline{Proof}
+         Suppose the contrary.\\
+         $s_1 \not\ioverlap (s_2 \iinter s_3).$
+  \item $s_1 \ioverlap (s_2 \iunion s_3) \Rightarrow
+         s_1 \ioverlap s_2 \vee s_1 \ioverlap s_3$
+       
 \end{enumerate}
 
 
