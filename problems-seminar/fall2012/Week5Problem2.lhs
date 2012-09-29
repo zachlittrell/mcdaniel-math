@@ -46,7 +46,7 @@ and we iterate once for each element in our list, so we get 2^n elements in the 
     x_i appears before x_i+1 in the list).
    We know the subset {x_1} is in the powerset, as {} is in result, 
    thus on x_1's iteration, x_1:{}={x_1} is in result'.
-   We know the subset {x_1,x_2} is in the powerset, as we just 
+   We know the subset {x_2,x_1} is in the powerset, as we just 
    established {x_1} is in result during x_2's iteration,
    so {x_2,x_1} is in result'.
    We can repeat this process, all the way up to x_n.
