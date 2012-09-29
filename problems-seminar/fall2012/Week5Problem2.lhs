@@ -34,9 +34,23 @@ in result and run powerset' on our new result and the rest of the list.
 >     powerset' result (x:xs) = let result' = result ++ map (x:) result
 >                               in powerset' result' xs
 
-We know powerset and powerset' returns the powerset of list
-as on each iteration, we double the number of elements in result,
-and we iterate once for each element in our list, so we get 2^n.
+We know powerset and powerset' returns the powerset of list.
+
+1. Since on each iteration, we double the number of elements in result,
+and we iterate once for each element in our list, so we get 2^n elements in the final result.
+
+2. Visibly, each element in xs appears at most once in each subset in result.
+
+3. Given a subset x_n,x_n-1...x_2,x_1 of list
+   (for the sake of our example, we'll assume 
+    x_i appears before x_i+1 in the list).
+   We know the subset {x_1} is in the powerset, as {} is in result, 
+   thus on x_1's iteration, x_1:{}={x_1} is in result'.
+   We know the subset {x_1,x_2} is in the powerset, as we just 
+   established {x_1} is in result during x_2's iteration,
+   so {x_2,x_1} is in result'.
+   We can repeat this process, all the way up to x_n.
+   So all subsets of list are in powerset list.
 
 Now, we need a way to filter out any subsets with
 three distinct elements whose product is a square.
