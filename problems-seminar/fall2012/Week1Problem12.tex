@@ -9,23 +9,36 @@
 
 %macros
 
+%constructs a 3-tuple around its 3 arguments
 \newcommand{\triple}[3]{\langle #1,#2,#3 \rangle}
+%constructs a set around its argument
 \newcommand{\set}[1]{\lbrace #1 \rbrace}
+%constructs a set in the set-builder notation with the first
+%argument before the bar and the second argument after.
 \newcommand{\buildset}[2]{\set{#1 | #2}}
+%constructs a closed interval between the two arguments
+\newcommand{\interval}[2]{\lbrack #1, #2 \rbrack}
+%union between intervals
 \newcommand{\iunion}{\oplus}
+%intersection between intervals
 \newcommand{\iinter}{\oslash}
+%overlap between intervals
 \newcommand{\ioverlap}{\perp}
 
 %tikz macros
+%draws just text
 \newcommand{\drawtext}[3]{
   \draw (#2,#3) node[minimum size=0.1cm,draw=none,fill=none,color=black]{#1};
 }
-
-\newcommand{\interval}[5]{
+%draws an interval line, where #1 is the label,
+%#2 is the x position, #3 is the y position,
+%#4 is the width, and #5 is the x position of the label.
+\newcommand{\intervalline}[5]{
   \draw (#2,#3) node[]{} -- (#4,#3) node[]{};
   \drawtext{#1}{#5}{#3}
   }
-
+%a wrapper around begin{tikzpicture} end{tikzpicture}, for how we'll
+%draw intervals.
 \newcommand{\intervals}[1]{
   \begin{tikzpicture}
     [line width=0.1cm,blue,every node/.style={circle,minimum size=0.25cm,fill=blue}]
@@ -36,6 +49,8 @@
 \begin{document}
 There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Simonelli.
 
+We want to show there is a point where three mathematicians are all sleeping at the same time.
+
 \textbf{Facts}
 \begin{enumerate}
   \item  Each mathematician goes to sleep exactly twice.
@@ -44,18 +59,16 @@ There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Si
          they are both asleep.
 \end{enumerate}
 
-We want to show there is a point where three mathematicians are all sleeping at the same time.
-
 \textbf{Definitions}
 \begin{itemize}
   \item \textbf{$M$} The set $\set{$Hamblen, Ko, More, Naumov, and Simonelli$}$
   \item \textbf{Snooze Interval} A Snooze Interval $s$ is a triplet of
         the form $\triple{name}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $name$ is the identifier of who was snoozing.
 
-For brevity, let $start_s = start$, $end_s = end$, and $name_s = name$.
+For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interval_s = \interval{start}{end}$.
 
         \intervals{
-          \interval{$s$}{0}{0}{3}{5.5}
+          \intervalline{$s$}{0}{0}{3}{5.5}
         }
   \item \textbf{$S$} The set of Snooze Intervals for each time each mathematician, $\mu$, in $M$, took a snooze.
 
@@ -83,23 +96,25 @@ For brevity, let $start_s = start$, $end_s = end$, and $name_s = name$.
        \begin{cases}
          undefined &
            \text{if } s_1 \not\ioverlap s_2\\
-         \triple{name_{s_1}$ over $name_{s_2}}{max(start_{s_1},end_{s_2})}
-                                          {min(end_{s_2}, end_{s_1})} &
+         \triple{name_{s_1}$ over $name_{s_2}}
+                {max(start_{s_1},start_{s_2})}
+                {end_{s_2}} &
            \text{if } start_{s_1} \leq end_{s_2} \leq end_{s_1}\\
-         \triple{name_{s_1}$ over $name_{s_2}}{max(start_{s_1},start_{s_2})}
-                                   {min(start_{s_2},end_{s_1})} &
+         \triple{name_{s_1}$ over $name_{s_2}}
+                {start_{s_2}}
+                {min(end_{s_2},end_{s_1})} &
            \text{if } start_{s_1} \leq start_{s_2} \leq end_{s_1}
        \end{cases}$
   \item \textbf{Chain} A sequence of distinct Snooze Intervals $\set{s_1}$ is a chain if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_{n-1} \ioverlap s_n$.
  
         \intervals{
-          \interval{$s_1$}{0}{100}{2.25}{4}
-          \interval{$s_2$}{2}{99.5}{3}{4}
-          \interval{$s_3$}{2.55}{99}{3.25}{4}
-          \interval{$s_4$}{1.5}{98.5}{3}{4}
+          \intervalline{$s_1$}{0}{100}{2.25}{4}
+          \intervalline{$s_2$}{2}{99.5}{3}{4}
+          \intervalline{$s_3$}{2.55}{99}{3.25}{4}
+          \intervalline{$s_4$}{1.5}{98.5}{3}{4}
           \drawtext{$\substack{.\\.\\.}$}{4}{98}
-          \interval{$s_{n-1}$}{0.5}{97.5}{1.25}{4}
-          \interval{$s_n$}{1}{97}{3}{4}
+          \intervalline{$s_{n-1}$}{0.5}{97.5}{1.25}{4}
+          \intervalline{$s_n$}{1}{97}{3}{4}
         }
 
   \item \textbf{Cycle} A chain $\set{s_1}$ is a cycle if $s_n \ioverlap s_1$.
@@ -115,19 +130,148 @@ For brevity, let $start_s = start$, $end_s = end$, and $name_s = name$.
           s_3 \ioverlap s_1 \Rightarrow
           s_1 \ioverlap (s_2 \iinter s_3)$
 
-         \intervals{
-           \interval{\textbf{$s_1$}}{0.5}{3}{2.75}{4}
-           \interval{\textbf{$s_2$}}{1.75}{2.5}{3}{4}
-           \interval{\textbf{$s_3$}}{1}{2}{2.5}{4}
-         }
+         \underline{Proof}\\
+           Since $s_2 \ioverlap s_3$, $s_2 \iinter s_3$ is defined.\\
+           Without loss of generality, suppose 
+           $start_{s_2} \leq start_{s_3}$
+           \begin{itemize}
+             \item Case 1: $end_{s_2} \geq end_{s_3}$.
 
-         \underline{Proof}
-         Suppose the contrary.\\
-         $s_1 \not\ioverlap (s_2 \iinter s_3).$
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
+                   }
+
+                   Then $interval_{s_2 \iinter s_3} = interval_{s_3} 
+                        \Rightarrow s_1 \ioverlap s_2 \iinter s_3$
+             \item Case 2: $end_{s_2} \leq end_{s_3}$.
+
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
+                   }
+
+                   Suppose $s_1 \not\ioverlap s_2 \iinter s_3$\\
+                   Then $start_{s_1} > end_{s_2}$ and
+                        $end_{s_1} < start_{s_3} \Rightarrow
+                        end_{s_1} < start_{s_1} \Rightarrow\Leftarrow$\\
+                   Thus, $s_1 \ioverlap s_2 \iinter s_3$.
+           \end{itemize}
+                  
+
   \item $s_1 \ioverlap (s_2 \iunion s_3) \Rightarrow
-         s_1 \ioverlap s_2 \vee s_1 \ioverlap s_3$
-       
+         s_2 \ioverlap s_3 \wedge
+         (s_1 \ioverlap s_2 \vee s_1 \ioverlap s_3)$\\
+        Without loss of generality, assume $start_{s_2} \leq start_{s_3}$.\\
+        Clearly, $s_2 \ioverlap s_3$.
+        \begin{itemize}
+          \item Case 1: $end_{s_2} \geq end_{s_3}$
+
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
+                   }
+
+                Then $interval_{s_2 \iunion s_3} = interval_{s_2} \Rightarrow
+                s_1 \ioverlap s_2$
+          \item Case 2: $end_{s_2} \leq end_{s_3}$
+
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
+                   }
+
+                \begin{itemize}
+                  \item Case I: $start_{s_1} \leq end_{s_2} \Rightarrow
+                        s_1 \ioverlap s_2$
+                  \item Case II: $start_{s_1} \geq end_{s_2} \Rightarrow
+                        s_1 \ioverlap s_3$. 
+                \end{itemize}                
+        \end{itemize}
 \end{enumerate}
+By Fact 2, we know there must be at least ${5 \choose 2}=10$ distinct overlapping pairs of mathematicians.\\
+We also have 10 Snooze Intervals in $S$, so we'd like to prove that given these numbers, there must be a Cycle of Snooze Intervals.
+
+\begin{itemize}
+  \item \textbf{Lemma 1}\\
+        If set of Snooze Intervals $S$ has $n$ elements and no cycles,
+        then $S$ has at most $n-1$ distinct overlapping pairs.
+
+        \underline{Proof of Lemma 1 by Induction on $n$}
+        \begin{itemize}
+          \item Base Case: Let $n$ = 1.\\
+                Then there are 0 overlapping pairs, thus
+                Lemma 1 is true for $n=1$.
+          \item Inductive Case: Let $n \geq 1$\\
+                Assume Lemma 1 is true for all x such that $1 \leq x \leq n$
+
+                Let $S$ be a set of $n+1$ Snooze Intervals.\\
+                Choose a Snooze Interval $s$ in $S$.
+
+                \begin{itemize}
+                  \item Case 1. $\forall \sigma \in S, s \not\ioverlap \sigma$\\
+                        Clearly, $S \setminus \set{s}$ has no cycles.\\
+                        By Lemma 1, $S \setminus \set{s}$ has at most 
+                        $n$ distinct overlapping pairs $\Rightarrow\\
+                        S$ has at most $n+1$ distinct overlapping pairs.
+                  \item Case 2. $\exists \sigma \in S, s \ioverlap \sigma$\\
+                        Since $S$ has no cycles and $S$ is finite, we
+                        can construct a Chain starting at $s$, until
+                        we find a Snooze Interval $\lambda$ who only
+                        overlaps with one other Snooze Interval.\\
+                        (If this was not true, we'd either find an
+                         infinite number of Snooze Intervals, or 
+                         overlap with a Snooze Interval already in 
+                         the Chain, thus creating a Cycle).\\
+                        Clearly, $S \setminus \set{\lambda}$ has no cycles.\\
+                        By Lemma 1, $S \setminus \set{\lambda}$ has at
+                        most $n$ distinct overlapping pairs $\Rightarrow\\
+                        S$ has at most $n+1$ distinct overlapping pairs.
+                        
+                        Thus, Lemma 1 holds for all $n$.
+                \end{itemize}
+        \end{itemize}
+
+\end{itemize}
+By the contrapositive of Theorem 1, we can deduce that there is at least Cycle in $S$. 
+
+To solve our original problem, it suffices to show that the following proposition:
+
+$P(n)="$ if there is a Cycle $C$ of length $n \geq 3$, then $\exists$ distinct $s_1, s_2, s_3 \in C, s_1 \ioverlap (s_2 \iinter s_3)$."
+
+\underline{Proof of $P$ by induction on $n$}
+\begin{itemize}
+  \item Base Case: Let $n = 3$\\
+        Let $\set{s_1,s_2,s_3}$ be a 3-length Cycle $\Rightarrow\\
+        s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge s_3 \ioverlap s_1$.\\
+        By Property 4, $s_1 \ioverlap (s_2 \iinter s_3)$.
+  \item Inductive Case: Let $n \geq 3$\\
+        Assume $P(n)$ is true.\\
+        Let $\set{s_1,s_2...s_n,s_{n+1}}$ be an $n+1-$length cycle.\\
+        By definition of Cycles, $s_1 \ioverlap s_2$.\\
+        Let $C' = \set{s_1 \iunion s_2, s_3,...s_n, s_{n+1}}$\\
+        Clearly, $s_3 \ioverlap s_1 \iunion s_2$ and 
+                 $s_{n+1} \ioverlap s_1 \iunion s_2$.\\
+        So, $C'$ is a Cycle as well.\\
+        By $P(n)$, $\exists$ distinct $x,y,z \in C', x \ioverlap (y \iinter z)$.
+
+        \begin{itemize}
+          \item Case 1. $s_1 \iunion s_2 \not= x,y $ or $z$. \\
+                Then $x,y,z \in C$
+          \item Case 2. Without less of generality, let 
+                $x = s_1 \iunion s_2$.\\
+                Then $(y \iinter z) \ioverlap (s_1 \iunion s_2)$.\\
+                By Property 5, $s_1 \ioverlap (y \iinter z)$ or
+                               $s_2 \ioverlap (y \iinter z)$.\\
+                Thus, either $\set{s_1,y,z}$ or $\set{s_2,y,z}$ form
+                the triplet we seek.
+        \end{itemize}
+        
+        Thus, $P$ is true for all $n$.
+        
+\end{itemize} 
+       
+Thus, there must be 3 mathematicians who are all sleeping at the same time at some point.
 
 
 \end{document}
