@@ -17,14 +17,18 @@
 \newcommand{\ioverlap}{\perp}
 
 %tikz macros
+\newcommand{\drawtext}[3]{
+  \draw (#2,#3) node[minimum size=0.1cm,draw=none,fill=none,color=black]{#1};
+}
+
 \newcommand{\interval}[5]{
   \draw (#2,#3) node[]{} -- (#4,#3) node[]{};
-  \draw (#5,#3) node[minimum size=0.1cm,draw=none,fill=none,color=black]{#1};
+  \drawtext{#1}{#5}{#3}
   }
 
 \newcommand{\intervals}[1]{
   \begin{tikzpicture}
-    [line width=0.1cm,blue!20,every node/.style={circle,minimum size=0.25cm,fill=blue!20}]
+    [line width=0.1cm,blue,every node/.style={circle,minimum size=0.25cm,fill=blue}]
     #1
   \end{tikzpicture}
 }
@@ -45,50 +49,61 @@ We want to show there is a point where three mathematicians are all sleeping at 
 \textbf{Definitions}
 \begin{itemize}
   \item \textbf{$M$} The set $\set{$Hamblen, Ko, More, Naumov, and Simonelli$}$
-  \item \textbf{Snooze Interval} A Snooze Interval is a triplet of
-        the form $\triple{snoozer}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $snoozer$ is the identifier of who was snoozing.\\
+  \item \textbf{Snooze Interval} A Snooze Interval $s$ is a triplet of
+        the form $\triple{name}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $name$ is the identifier of who was snoozing.
+
+For brevity, let $start_s = start$, $end_s = end$, and $name_s = name$.
+
         \intervals{
-          \interval{$\triple{snoozer}{start}{end}$}{0}{0}{3}{5.5}
+          \interval{$s$}{0}{0}{3}{5.5}
         }
   \item \textbf{$S$} The set of Snooze Intervals for each time each mathematician, $\mu$, in $M$, took a snooze.
-  \item \textbf{$\iunion$} For two Snooze Intervals,
-                         $\triple{snoozer_1}{start_1}{end_1}$ and
-                         $\triple{snoozer_2}{start_2}{end_2}$, we define
-                         $\triple{snoozer_1}{start_1}{end_1} \iunion
-                          \triple{snoozer_2}{start_2}{end_2}$ as \\
-                         $\triple{snoozer_1 and snoozer_2}
-                                 {min(start_1, start_2)}
-                                 {max(end_1,end_2)}$.
 
   \item \textbf{$\ioverlap$} For two Snooze Intervals,
-                         $\triple{snoozer_1}{start_1}{end_1}$ and
-                         $\triple{snoozer_2}{start_2}{end_2}$, we define
-                         $\triple{snoozer_1}{start_1}{end_1} \ioverlap
-                          \triple{snoozer_2}{start_2}{end_2}$ as being true
-                         when\\$snoozer_1 \not= snoozer_2$ and $start_1 \leq end_2 \leq end_1$ or
-                                $start_1 \leq start_2 \leq end_1$.
+                         $s_1$ and
+                         $s_2$, we define
+                         $s_1 \ioverlap s_2$ as being true
+                         when\\$name_{s_1} \not= name_{s_2}$ and $start_{s_1} \leq end_{s_2} \leq end_{s_1}$ or
+                                $start_{s_1} \leq start_{s_2} \leq end_{s_1}$
+                         or $s_2 \ioverlap s_1$.
+
+  \item \textbf{$\iunion$} For two Snooze Intervals,
+                         $s_1$ and
+                         $s_2$, where $s_1 \ioverlap s_2$, we define
+                         $s_1 \iunion s_2$ as \\
+                         $\triple{name_{s_1}$ and $name_{s_2}}
+                                 {min(start_{s_1}, start_{s_2})}
+                                 {max(end_{s_1},end_{s_2})}$.
 
   \item \textbf{$\iinter$}
     For two Snooze Intervals,
-    $s_1=\triple{snoozer_1}{start_1}{end_1}$ and
-    $s_2=\triple{snoozer_2}{start_2}{end_2}$, we define
+    $s_1$ and
+    $s_2$, we define\\
     $s_1 \iinter s_2 =
        \begin{cases}
-         \triple{snoozer_1 over snoozer_2}{\infty}{\infty} &
+         undefined &
            \text{if } s_1 \not\ioverlap s_2\\
-         \triple{snoozer_1 over snoozer_2}{max(start_1,end_2)}
-                                          {min(end_2, end_1)} &
-           \text{if } start_1 \leq end_2 \leq end_1\\
-         \triple{snoozer_1 over snoozer_2}{max(start_1,start_2)}
-                                   {min(start_2,end_1)} &
-           \text{if } start_1 \leq start_2 \leq end_1
+         \triple{name_{s_1}$ over $name_{s_2}}{max(start_{s_1},end_{s_2})}
+                                          {min(end_{s_2}, end_{s_1})} &
+           \text{if } start_{s_1} \leq end_{s_2} \leq end_{s_1}\\
+         \triple{name_{s_1}$ over $name_{s_2}}{max(start_{s_1},start_{s_2})}
+                                   {min(start_{s_2},end_{s_1})} &
+           \text{if } start_{s_1} \leq start_{s_2} \leq end_{s_1}
        \end{cases}$
-  \item \textbf{Cycle} A sequence of distinct Snooze Intervals $\lbrace s_i \rbrace$ is a cycle if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_n \ioverlap s_1$.
-        
+  \item \textbf{Chain} A sequence of distinct Snooze Intervals $\set{s_1}$ is a chain if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_{n-1} \ioverlap s_n$.
+ 
         \intervals{
-          
+          \interval{$s_1$}{0}{100}{2.25}{4}
+          \interval{$s_2$}{2}{99.5}{3}{4}
+          \interval{$s_3$}{2.55}{99}{3.25}{4}
+          \interval{$s_4$}{1.5}{98.5}{3}{4}
+          \drawtext{$\substack{.\\.\\.}$}{4}{98}
+          \interval{$s_{n-1}$}{0.5}{97.5}{1.25}{4}
+          \interval{$s_n$}{1}{97}{3}{4}
         }
-\end{itemize}
+
+  \item \textbf{Cycle} A chain $\set{s_1}$ is a cycle if $s_n \ioverlap s_1$.
+       \end{itemize}
 
 \textbf{Properties}
 \begin{enumerate}
@@ -102,8 +117,8 @@ We want to show there is a point where three mathematicians are all sleeping at 
 
          \intervals{
            \interval{\textbf{$s_1$}}{0.5}{3}{2.75}{4}
-           \interval{\textbf{$s_2$}}{1.75}{2}{3}{4}
-           \interval{\textbf{$s_3$}}{1}{1}{2.5}{4}
+           \interval{\textbf{$s_2$}}{1.75}{2.5}{3}{4}
+           \interval{\textbf{$s_3$}}{1}{2}{2.5}{4}
          }
 
          \underline{Proof}
