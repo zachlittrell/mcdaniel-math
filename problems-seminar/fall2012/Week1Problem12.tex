@@ -212,8 +212,8 @@ We also have 10 Snooze Intervals in $S$, so we'd like to prove that given these 
                   \item Case 1. $\forall \sigma \in S, s \not\ioverlap \sigma$\\
                         Clearly, $S \setminus \set{s}$ has no cycles.\\
                         By Lemma 1, $S \setminus \set{s}$ has at most 
-                        $n$ distinct overlapping pairs $\Rightarrow\\
-                        S$ has at most $n+1$ distinct overlapping pairs.
+                        $n-1$ distinct overlapping pairs $\Rightarrow\\
+                        S$ has at most $n-1$ distinct overlapping pairs.
                   \item Case 2. $\exists \sigma \in S, s \ioverlap \sigma$\\
                         Since $S$ has no cycles and $S$ is finite, we
                         can construct a Chain starting at $s$, until
@@ -225,8 +225,8 @@ We also have 10 Snooze Intervals in $S$, so we'd like to prove that given these 
                          the Chain, thus creating a Cycle).\\
                         Clearly, $S \setminus \set{\lambda}$ has no cycles.\\
                         By Lemma 1, $S \setminus \set{\lambda}$ has at
-                        most $n$ distinct overlapping pairs $\Rightarrow\\
-                        S$ has at most $n+1$ distinct overlapping pairs.
+                        most $n-1$ distinct overlapping pairs $\Rightarrow\\
+                        S$ has at most $n$ distinct overlapping pairs.
                         
                         Thus, Lemma 1 holds for all $n$.
                 \end{itemize}
