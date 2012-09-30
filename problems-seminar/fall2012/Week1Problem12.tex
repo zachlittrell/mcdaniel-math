@@ -1,12 +1,55 @@
 \documentclass[fleqn]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{tikz}
 \usepackage[parfill]{parskip}
 \usepackage[vmargin=0.5cm]{geometry}
 \setlength\parindent{0pt}
 \setlength{\mathindent}{0pt}
+
+%macros
+
+%constructs a 3-tuple around its 3 arguments
+\newcommand{\triple}[3]{\langle #1,#2,#3 \rangle}
+%constructs a set around its argument
+\newcommand{\set}[1]{\lbrace #1 \rbrace}
+%constructs a set in the set-builder notation with the first
+%argument before the bar and the second argument after.
+\newcommand{\buildset}[2]{\set{#1 | #2}}
+%constructs a closed interval between the two arguments
+\newcommand{\interval}[2]{\lbrack #1, #2 \rbrack}
+%union between intervals
+\newcommand{\iunion}{\oplus}
+%intersection between intervals
+\newcommand{\iinter}{\oslash}
+%overlap between intervals
+\newcommand{\ioverlap}{\perp}
+
+%tikz macros
+%draws just text
+\newcommand{\drawtext}[3]{
+  \draw (#2,#3) node[minimum size=0.1cm,draw=none,fill=none,color=black]{#1};
+}
+%draws an interval line, where #1 is the label,
+%#2 is the x position, #3 is the y position,
+%#4 is the width, and #5 is the x position of the label.
+\newcommand{\intervalline}[5]{
+  \draw (#2,#3) node[]{} -- (#4,#3) node[]{};
+  \drawtext{#1}{#5}{#3}
+  }
+%a wrapper around begin{tikzpicture} end{tikzpicture}, for how we'll
+%draw intervals.
+\newcommand{\intervals}[1]{
+  \begin{tikzpicture}
+    [line width=0.1cm,blue,every node/.style={circle,minimum size=0.25cm,fill=blue}]
+    #1
+  \end{tikzpicture}
+}
+
 \begin{document}
 There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Simonelli.
+
+We want to show there is a point where three mathematicians are all sleeping at the same time.
 
 \textbf{Facts}
 \begin{enumerate}
@@ -16,160 +59,219 @@ There are five mathematicians at a conference: Hamblen, Ko, More, Naumov, and Si
          they are both asleep.
 \end{enumerate}
 
-We want to show there is a point where three mathematicians are all sleeping at the same time.
-
-First, we are going to construct an undirected graph $G$.
-
-\textbf{Rules for constructing $G$}:
-\begin{enumerate}
-  \item For each mathematician, $M$, make two vertices, one for each
-        time $M$ takes a snooze. We'll denote these snooze sessions
-        as $M_1$ and $M_2$.
-  \item Two distinct vertices share an edge iff the snooze sessions the        vertices represent overlap.
-  \item Given a vertex $v$, $v$ does not share an edge with
-        itself.
-\end{enumerate}
-
 \textbf{Definitions}
 \begin{itemize}
-  \item \textbf{Simple Circuit}  A sequence of distinct vertices make a 
-                        simple circuit if you can traverse along
-                        all the vertices in order and 
-                        return to the first vertex.
-  \item \textbf{$V_G$} The vertices in graph $G$.
-  \item \textbf{Snooze Vertex} A vertex that represents a span of time.
-  \item \textbf{$time(v)$} The span of time Snooze Vertex $v$ 
-                           represents.
-  \item \textbf{$\oslash$} For two Snooze Vertices, $v$ and $w$,
-                           we define $v \oslash w$ as a Snooze Vertex
-                           that represents the span of time where
-                           $time(v)$ and $time(w)$ overlaps.\\
-                           If $time(v)$ and $time(w)$ do not overlap,
-                           then $v \oslash w = null time$.
-  \item \textbf{$\oplus$}  For two Snooze Vertices, $v$ and $w$,
-                           we define $v \oplus w$ as a Snooze Vertex
-                           that represents $time(v)$ and $time(w)$
-                           combined. 
-  \item \textbf{$\circledast$} For two Snooze Vertices, $v$ and $w$,
-                               we defined $v \circledast w$ to be true
-                               if $time(v)$ and $time(w)$ overlap.
-                               If $time(v)$ or $time(w)$ are 
-                               $null time$ then $v \circledast w$
-                               is false.
-\end{itemize}
+  \item \textbf{$M$} The set $\set{$Hamblen, Ko, More, Naumov, and Simonelli$}$
+  \item \textbf{Snooze Interval} A Snooze Interval $s$ is a triplet of
+        the form $\triple{name}{start}{end}$, where $start, end \in \mathbb{N}$ and $start \leq end$. $name$ is the identifier of who was snoozing.
+
+For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interval_s = \interval{start}{end}$.
+
+        \intervals{
+          \intervalline{$s$}{0}{0}{3}{5.5}
+        }
+  \item \textbf{$S$} The set of Snooze Intervals for each time each mathematician, $\mu$, in $M$, took a snooze.
+
+  \item \textbf{$\ioverlap$} For two Snooze Intervals,
+                         $s_1$ and
+                         $s_2$, we define
+                         $s_1 \ioverlap s_2$ as being true
+                         when\\$name_{s_1} \not= name_{s_2}$ and $start_{s_1} \leq end_{s_2} \leq end_{s_1}$ or
+                                $start_{s_1} \leq start_{s_2} \leq end_{s_1}$
+                         or $s_2 \ioverlap s_1$.
+
+  \item \textbf{$\iunion$} For two Snooze Intervals,
+                         $s_1$ and
+                         $s_2$, where $s_1 \ioverlap s_2$, we define
+                         $s_1 \iunion s_2$ as \\
+                         $\triple{name_{s_1}$ and $name_{s_2}}
+                                 {min(start_{s_1}, start_{s_2})}
+                                 {max(end_{s_1},end_{s_2})}$.
+
+  \item \textbf{$\iinter$}
+    For two Snooze Intervals,
+    $s_1$ and
+    $s_2$, we define\\
+    $s_1 \iinter s_2 =
+       \begin{cases}
+         undefined &
+           \text{if } s_1 \not\ioverlap s_2\\
+         \triple{name_{s_1}$ over $name_{s_2}}
+                {max(start_{s_1},start_{s_2})}
+                {end_{s_2}} &
+           \text{if } start_{s_1} \leq end_{s_2} \leq end_{s_1}\\
+         \triple{name_{s_1}$ over $name_{s_2}}
+                {start_{s_2}}
+                {min(end_{s_2},end_{s_1})} &
+           \text{if } start_{s_1} \leq start_{s_2} \leq end_{s_1}
+       \end{cases}$
+  \item \textbf{Chain} A sequence of distinct Snooze Intervals $\set{s_1}$ is a chain if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_{n-1} \ioverlap s_n$.
+ 
+        \intervals{
+          \intervalline{$s_1$}{0}{100}{2.25}{4}
+          \intervalline{$s_2$}{2}{99.5}{3}{4}
+          \intervalline{$s_3$}{2.55}{99}{3.25}{4}
+          \intervalline{$s_4$}{1.5}{98.5}{3}{4}
+          \drawtext{$\substack{.\\.\\.}$}{4}{98}
+          \intervalline{$s_{n-1}$}{0.5}{97.5}{1.25}{4}
+          \intervalline{$s_n$}{1}{97}{3}{4}
+        }
+
+  \item \textbf{Cycle} A chain $\set{s_1}$ is a cycle if $s_n \ioverlap s_1$.
+       \end{itemize}
 
 \textbf{Properties}
 \begin{enumerate}
-  \item Given three snooze vertices, $v$,$w$, and $x$,\\
-        $v \circledast w \wedge 
-         v \circledast x \wedge 
-         x \circledast w \Leftrightarrow 
-         v \circledast (x \oslash w)$.
+   \item Clearly, $\iunion$ is commutative.
+   \item Clearly, $\iinter$ is commutative.
+   \item Clearly, $\ioverlap$ is symmetric.
+   \item $s_1 \ioverlap s_2 \wedge
+          s_2 \ioverlap s_3 \wedge
+          s_3 \ioverlap s_1 \Rightarrow
+          s_1 \ioverlap (s_2 \iinter s_3)$
 
-        \underline{Proof}:\\
-        $\Rightarrow$\\
-        Suppose the contrary is true.\\
-        Then there is $time(v)$ overlaps with $time(w)$,
-        and there's a $time(x)$ overlaps with $time(w)$ as well.\\
-        We also know that $time(v)$ overlaps with $time(x)$.\\
-        But, since $\neg(v \circledast (x \oslash w))$, then either
-        $v$ doesn't overlap with both or either, or 
-        $v$'s snooze session would have to pause during
-        $time(x \oslash w) \Rightarrow \Leftarrow$.
+         \underline{Proof}\\
+           Since $s_2 \ioverlap s_3$, $s_2 \iinter s_3$ is defined.\\
+           Without loss of generality, suppose 
+           $start_{s_2} \leq start_{s_3}$
+           \begin{itemize}
+             \item Case 1: $end_{s_2} \geq end_{s_3}$.
 
-         $\Leftarrow$\\
-         If $time(v)$ overlaps where $time(x)$ overlaps with $time(w)$,
-         then clearly each span of time overlaps with each  other.
-  \item Clearly, $\oslash$ is commutative.
-  \item Clearly, $\oplus$ is commutative.
-  \item Clearly, $\circledast$ is symmetrical.
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
+                   }
+
+                   Then $interval_{s_2 \iinter s_3} = interval_{s_3} 
+                        \Rightarrow s_1 \ioverlap s_2 \iinter s_3$
+             \item Case 2: $end_{s_2} \leq end_{s_3}$.
+
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
+                   }
+
+                   Suppose $s_1 \not\ioverlap s_2 \iinter s_3$\\
+                   Then $start_{s_1} > end_{s_2}$ and
+                        $end_{s_1} < start_{s_3} \Rightarrow
+                        end_{s_1} < start_{s_1} \Rightarrow\Leftarrow$\\
+                   Thus, $s_1 \ioverlap s_2 \iinter s_3$.
+           \end{itemize}
+                  
+
+  \item $s_1 \ioverlap (s_2 \iunion s_3) \Rightarrow
+         s_2 \ioverlap s_3 \wedge
+         (s_1 \ioverlap s_2 \vee s_1 \ioverlap s_3)$\\
+        Without loss of generality, assume $start_{s_2} \leq start_{s_3}$.\\
+        Clearly, $s_2 \ioverlap s_3$.
+        \begin{itemize}
+          \item Case 1: $end_{s_2} \geq end_{s_3}$
+
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
+                   }
+
+                Then $interval_{s_2 \iunion s_3} = interval_{s_2} \Rightarrow
+                s_1 \ioverlap s_2$
+          \item Case 2: $end_{s_2} \leq end_{s_3}$
+
+                   \intervals{
+                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                     \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
+                   }
+
+                \begin{itemize}
+                  \item Case I: $start_{s_1} \leq end_{s_2} \Rightarrow
+                        s_1 \ioverlap s_2$
+                  \item Case II: $start_{s_1} \geq end_{s_2} \Rightarrow
+                        s_1 \ioverlap s_3$. 
+                \end{itemize}                
+        \end{itemize}
 \end{enumerate}
-
-From how we construct our graph, we know there are 10 vertices.
-
-Since we have 5 mathematicians, by Fact 2, for every pair of distinct mathematicians, $M$ and $N$, there must exist $i,j \in \lbrace 1,2 \rbrace$ such that $M_i \circledast N_j$.
-
-So, the number of edges in our graph must be at least ${5 \choose 2} = 10$.
-
-First, we're going to define and prove the following theorem:
+By Fact 2, we know there must be at least ${5 \choose 2}=10$ distinct overlapping pairs of mathematicians.\\
+We also have 10 Snooze Intervals in $S$, so we'd like to prove that given these numbers, there must be a Cycle of Snooze Intervals.
 
 \begin{itemize}
-\item
-\textbf{Theorem 1}\\
-If graph $G$ has $n$ vertices and no simple circuits,
-then $G$ has at most $n-1$ edges.
+  \item \textbf{Lemma 1}\\
+        If set of Snooze Intervals $S$ has $n$ elements and no cycles,
+        then $S$ has at most $n-1$ distinct overlapping pairs.
 
-\underline{Proof of Theorem 1 by Induction on $n$:}
+        \underline{Proof of Lemma 1 by Induction on $n$}
+        \begin{itemize}
+          \item Base Case: Let $n$ = 1.\\
+                Then there are 0 overlapping pairs, thus
+                Lemma 1 is true for $n=1$.
+          \item Inductive Case: Let $n \geq 1$\\
+                Assume Lemma 1 is true for all x such that $1 \leq x \leq n$
 
-Base Case: Let $n = 1$.\\
-Then there are 0 edges, thus Theorem 1 works for $n=1$.
+                Let $S$ be a set of $n+1$ Snooze Intervals.\\
+                Choose a Snooze Interval $s$ in $S$.
 
-Inductive Case: Let $n \geq 1$\\
-Assume Theorem 1 is true for all $x$ such that $1 \leq x \leq n$
+                \begin{itemize}
+                  \item Case 1. $\forall \sigma \in S, s \not\ioverlap \sigma$\\
+                        Clearly, $S \setminus \set{s}$ has no cycles.\\
+                        By Lemma 1, $S \setminus \set{s}$ has at most 
+                        $n$ distinct overlapping pairs $\Rightarrow\\
+                        S$ has at most $n+1$ distinct overlapping pairs.
+                  \item Case 2. $\exists \sigma \in S, s \ioverlap \sigma$\\
+                        Since $S$ has no cycles and $S$ is finite, we
+                        can construct a Chain starting at $s$, until
+                        we find a Snooze Interval $\lambda$ who only
+                        overlaps with one other Snooze Interval.\\
+                        (If this was not true, we'd either find an
+                         infinite number of Snooze Intervals, or 
+                         overlap with a Snooze Interval already in 
+                         the Chain, thus creating a Cycle).\\
+                        Clearly, $S \setminus \set{\lambda}$ has no cycles.\\
+                        By Lemma 1, $S \setminus \set{\lambda}$ has at
+                        most $n$ distinct overlapping pairs $\Rightarrow\\
+                        S$ has at most $n+1$ distinct overlapping pairs.
+                        
+                        Thus, Lemma 1 holds for all $n$.
+                \end{itemize}
+        \end{itemize}
 
-Let $G$ be a graph with $n+1$ vertices.\\
-We want to show that $G$ has at most $n$ edges.
+\end{itemize}
+By the contrapositive of Lemma 1, we can deduce that there is at least one Cycle in $S$. 
 
-Choose a vertex $v$ in $G$.
+To solve our original problem, it suffices to show that the following proposition:
 
-Case 1. $v$ has no edges.\\
-We then create a copy of $G$ called $G'$, with $v$ removed.\\
-Obviously, $G'$ also has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges, which means $G$ also has at most $n-1$ edges.
-
-Case 2. $v$ has at least one edge.\\
-Since $G$ has no circuits, we can follow a path of edges from $v$ until we arrive at a vertex, $l$ with no other edge besides the one used to get to it (if this was not the case, we could either find an infinite number of distinct vertices, but $G$ is finite, or end up at a vertex we visited before, thus creating a simple circuit).\\
-We then create a copy of $G$ called $G'$ with $l$ and its edge removed.
-\\Clearly, $G'$ has no simple circuits, and by our inductive hypothesis, $G'$ has at most $n-1$ edges. So $G$ has at most $n-1+1=n$ edges.
-
-
-So Theorem 1 is true for $n+1$, and by mathematical induction, Theorem 1 is true for all $n$.
-\end{itemize} 
-By the contrapositive of Theorem 1, we can deduce that $G$ has at least one simple circuit.
-
-To solve our problem, we'd like to find that regardless of how long the simple circuit in $G$ is, we can find three Snooze Vertices that overlap with one another.\\
-So, it suffices to prove the following proposition:\\
-For a graph, $G$\\
-$P(n)$ is true $\Leftrightarrow$ if there is a simple circuit,$C$, of length $n$ in $V_G$,\\ then $\exists$ distinct $ L,M,N \in C,
-                       L \circledast (M \oslash N)$ .\\
-where $n \geq 3$.
+$P(n)="$ if there is a Cycle $C$ of length $n \geq 3$, then $\exists$ distinct $s_1, s_2, s_3 \in C, s_1 \ioverlap (s_2 \iinter s_3)$."
 
 \underline{Proof of $P$ by induction on $n$}
+\begin{itemize}
+  \item Base Case: Let $n = 3$\\
+        Let $\set{s_1,s_2,s_3}$ be a 3-length Cycle $\Rightarrow\\
+        s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge s_3 \ioverlap s_1$.\\
+        By Property 4, $s_1 \ioverlap (s_2 \iinter s_3)$.
+  \item Inductive Case: Let $n \geq 3$\\
+        Assume $P(n)$ is true.\\
+        Let $\set{s_1,s_2...s_n,s_{n+1}}$ be an $n+1-$length cycle.\\
+        By definition of Cycles, $s_1 \ioverlap s_2$.\\
+        Let $C' = \set{s_1 \iunion s_2, s_3,...s_n, s_{n+1}}$\\
+        Clearly, $s_3 \ioverlap s_1 \iunion s_2$ and 
+                 $s_{n+1} \ioverlap s_1 \iunion s_2$.\\
+        So, $C'$ is a Cycle as well.\\
+        By $P(n)$, $\exists$ distinct $x,y,z \in C', x \ioverlap (y \iinter z)$.
 
-Base Case: Let $n = 3$\\
-Let $\lbrace L, M, N \rbrace$ be the sequence of vertices who make up a 3-length simple circuit in $V_G \Rightarrow\\
-L \circledast M \wedge M \circledast N \wedge N \circledast L$.\\
-By Property 1, $L \circledast (M \oslash N)$.
-
-Inductive Case: Let $n \geq 3$\\
-Assume $P(n)$ is true.\\
-Let $C$ be a sequence of vertices who make up an $n+1$-length simple circuit in $V_G$.\\
-Let $\lbrace L,M \rbrace$ = the first two vertices in $C$.\\
-Let $R$ = the vertices after $L$ and $M$ in $C$.\\
-By the definition of $C$, $L \circledast M$\\
-Let $N$ = $L \oplus M$.
-Construct a new graph, $G'$, with all vertices of $G$ except$L$ and $M$, and also with $N$, using rules 2 and 3 that we used for $G$.\\
-Clearly, all Snooze Vertices that overlapped with $L$ or $M$ overlap with $N$ as well.\\
-So, $N$ and $R$ make up an $n$-length simple circuit, which by $P(n)$ implies that\\
-$\exists$ distinct $X,Y,Z \in V_{G'},
-              X \circledast (Y \oslash Z)$
-
-Now, using $X,Y,Z$, we need to find three vertices in $V_G$ that are similar interconnecting.
-
-Cases
-\begin{enumerate}
-  \item $N \not= X \wedge N \not= Y \wedge N \not= Z \Rightarrow
-        X,Y,Z \in V_G$,\\
-        so $X,Y,Z$ form the triplet we're looking for.
-
-  \item Without loss of generality, let $X = N$.\\
-        Which means $(L \oplus M) \circledast (Y \oslash Z) \Rightarrow$\\
-        So, there is some span of time where $time(Y \oslash Z)$ 
-        overlaps with either $time(L)$ or $time(M)$, or both.\\
-        From this, we can get our triplet of vertices.
-\end{enumerate}
-Thus, $P(n+1)$ is true, and by mathematical induction, $P$ is true.
-
-Thus, there is some point when three mathematicians are all sleeping at the same time.
+        \begin{itemize}
+          \item Case 1. $s_1 \iunion s_2 \not= x,y $ or $z$. \\
+                Then $x,y,z \in C$
+          \item Case 2. Without less of generality, let 
+                $x = s_1 \iunion s_2$.\\
+                Then $(y \iinter z) \ioverlap (s_1 \iunion s_2)$.\\
+                By Property 5, $s_1 \ioverlap (y \iinter z)$ or
+                               $s_2 \ioverlap (y \iinter z)$.\\
+                Thus, either $\set{s_1,y,z}$ or $\set{s_2,y,z}$ form
+                the triplet we seek.
+        \end{itemize}
+        
+        Thus, $P$ is true for all $n$.
+        
+\end{itemize} 
+       
+Thus, there must be 3 mathematicians who are all sleeping at the same time at some point.
 
 
 \end{document}
