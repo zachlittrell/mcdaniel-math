@@ -173,34 +173,41 @@ For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interva
            \end{itemize}
                   
 
-  \item $s_1 \ioverlap (s_2 \iunion s_3) \Rightarrow
+  \item $s_1 \ioverlap (s_2 \iunion s_3) \Leftrightarrow
          s_2 \ioverlap s_3 \wedge
-         (s_1 \ioverlap s_2 \vee s_1 \ioverlap s_3)$\\
-        Without loss of generality, assume $start_{s_2} \leq start_{s_3}$.\\
-        Clearly, $s_2 \ioverlap s_3$.
+         (s_1 \ioverlap s_2 \vee s_1 \ioverlap s_3)$
         \begin{itemize}
-          \item Case 1: $end_{s_2} \geq end_{s_3}$
+          \item \underline{Proof for $\Leftarrow$}
+                 Without loss of generality, assume $s_1 \ioverlap s_2$.\\
+                 Clearly, $s_1 \ioverlap s_2 \iunion s_3$.
+                   
+          \item \underline{Proof for $\Rightarrow$}
+                 Without loss of generality, assume $start_{s_2} \leq start_{s_3}$.\\
+                 Clearly, $s_2 \ioverlap s_3$.
+                 \begin{itemize}
+                   \item Case 1: $end_{s_2} \geq end_{s_3}$
 
-                   \intervals{
-                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
-                     \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
-                   }
+                            \intervals{
+                              \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                              \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
+                            }
 
-                Then $interval_{s_2 \iunion s_3} = interval_{s_2} \Rightarrow
-                s_1 \ioverlap s_2$
-          \item Case 2: $end_{s_2} \leq end_{s_3}$
+                         Then $interval_{s_2 \iunion s_3} = interval_{s_2} \Rightarrow
+                         s_1 \ioverlap s_2$
+                   \item Case 2: $end_{s_2} \leq end_{s_3}$
 
-                   \intervals{
-                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
-                     \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
-                   }
+                            \intervals{
+                              \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                              \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
+                            }
 
-                \begin{itemize}
-                  \item Case I: $start_{s_1} \leq end_{s_2} \Rightarrow
-                        s_1 \ioverlap s_2$
-                  \item Case II: $start_{s_1} \geq end_{s_2} \Rightarrow
-                        s_1 \ioverlap s_3$. 
-                \end{itemize}                
+                         \begin{itemize}
+                           \item Case I: $start_{s_1} \leq end_{s_2} \Rightarrow
+                                 s_1 \ioverlap s_2$
+                           \item Case II: $start_{s_1} \geq end_{s_2} \Rightarrow
+                                 s_1 \ioverlap s_3$. 
+                         \end{itemize}                
+          \end{itemize}
         \end{itemize}
 \end{enumerate}
 By Fact 2, we know there must be at least ${5 \choose 2}=10$ distinct overlapping pairs of mathematicians.\\
@@ -264,8 +271,8 @@ $P(n)="$ if there is a Cycle $C$ of length $n \geq 3$, then $\exists$ distinct $
         Let $\set{s_1,s_2...s_n,s_{n+1}}$ be an $n+1-$length cycle.\\
         By definition of Cycles, $s_1 \ioverlap s_2$.\\
         Let $C' = \set{s_1 \iunion s_2, s_3,...s_n, s_{n+1}}$\\
-        Clearly, $s_3 \ioverlap s_1 \iunion s_2$ and 
-                 $s_{n+1} \ioverlap s_1 \iunion s_2$.\\
+        By Property 5, $s_3 \ioverlap s_1 \iunion s_2$ and 
+                       $s_{n+1} \ioverlap s_1 \iunion s_2$.\\
         So, $C'$ is a Cycle as well.\\
         By $P(n)$, $\exists$ distinct $x,y,z \in C', x \ioverlap (y \iinter z)$.
 
