@@ -88,6 +88,12 @@ For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interva
                                  {min(start_{s_1}, start_{s_2})}
                                  {max(end_{s_1},end_{s_2})}$.
 
+                         \intervals{
+                           \intervalline{$s_1$}{0}{3}{2}{4}
+                           \intervalline{$s_2$}{1}{2.5}{2.5}{4}
+                           \intervalline{$s_1 \iunion s_2$}{0}{2}{2.5}{4}
+                         }
+
   \item \textbf{$\iinter$}
     For two Snooze Intervals,
     $s_1$ and
@@ -105,6 +111,14 @@ For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interva
                 {min(end_{s_2},end_{s_1})} &
            \text{if } start_{s_1} \leq start_{s_2} \leq end_{s_1}
        \end{cases}$
+
+        \intervals{
+           \intervalline{$s_1$}{0}{3}{2}{4}
+           \intervalline{$s_2$}{1}{2.5}{2.5}{4}
+           \intervalline{$s_1 \iinter s_2$}{1}{2}{2}{4}
+        }
+
+
   \item \textbf{Chain} A sequence of distinct Snooze Intervals $\set{s_1}$ is a chain if $s_1 \ioverlap s_2 \wedge s_2 \ioverlap s_3 \wedge ... s_{n-1} \ioverlap s_n$.
  
         \intervals{
