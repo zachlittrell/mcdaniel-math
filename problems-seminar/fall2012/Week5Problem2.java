@@ -39,7 +39,7 @@ public class Week5Problem2
       BigInteger step = BigInteger.valueOf(this.step);
       List<Integer> longest = Collections.<Integer>emptyList();
       for (BigInteger i = BigInteger.valueOf(start);
-	   i.compareTo(end) <= 0;
+	   i.compareTo(end) < 0;
 	   i = i.add(step))
       {
         List<Integer> subset = binaryNumberToSubset(max,i);
@@ -57,12 +57,14 @@ public class Week5Problem2
                                                    BigInteger string)
   {
     ArrayList<Integer> list = new ArrayList<Integer>();
-    for (int i = 0; i < max; i++)
+    for (int i = 0; i < max;)
     {
       if (string.testBit(i))
       {
-        list.add(i);
+        list.add(++i);
       }
+      else
+	i++;
     }
     return list;
   }
