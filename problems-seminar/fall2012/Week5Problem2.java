@@ -2,6 +2,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -34,10 +36,11 @@ public class Week5Problem2
     public List<Integer> call() throws Exception
     {
       BigInteger end = BigInteger.valueOf(2).pow(max);
+      BigInteger step = BigInteger.valueOf(this.step);
       List<Integer> longest = Collections.<Integer>emptyList();
       for (BigInteger i = BigInteger.valueOf(start);
 	   i.compareTo(end) <= 0;
-	   i = i.add(BigInteger.ONE))
+	   i = i.add(step))
       {
         List<Integer> subset = binaryNumberToSubset(max,i);
 	if (isValid(subset) && subset.size() > longest.size())
@@ -107,17 +110,17 @@ public class Week5Problem2
     int processors = Runtime.getRuntime().availableProcessors();
     //We'd like to use as many processors as we can to distribute
     //the task.
-    ExecutorService pool = Executors.newFixedThreadPool(processors); 
-    List<Future<List<Integer>>> futures = 
-      new ArrayList<Future<List<Integer>>>();
+    ExecutorService threads = Executors.newFixedThreadPool(processors); 
+    CompletionService<List<Integer>> pool =
+      new ExecutorCompletionService<List<Integer>>(threads);
     for (int i = 0; i < processors; i++)
-      futures.add(pool.submit(new IntervalTask(max,i,processors)));
+      pool.submit(new IntervalTask(max,i,processors));
     List<Integer> longest = Collections.<Integer>emptyList();
-    for (Future<List<Integer>> future : futures)
+    for (int i = 0; i < processors; i++)
     {
       try
       {
-        List<Integer> subset = future.get();
+        List<Integer> subset = pool.take().get();
         if (subset.size() > longest.size())
        	  longest = subset;
       }
@@ -125,7 +128,7 @@ public class Week5Problem2
       {
       }
     }
-    pool.shutdown();
+    threads.shutdown();
     return longest;
   }
 
