@@ -141,35 +141,43 @@ For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interva
    \item Clearly, $\ioverlap$ is symmetric.
    \item $s_1 \ioverlap s_2 \wedge
           s_2 \ioverlap s_3 \wedge
-          s_3 \ioverlap s_1 \Rightarrow
+          s_3 \ioverlap s_1 \Leftrightarrow
           s_1 \ioverlap (s_2 \iinter s_3)$
 
-         \underline{Proof}\\
-           Since $s_2 \ioverlap s_3$, $s_2 \iinter s_3$ is defined.\\
-           Without loss of generality, suppose 
-           $start_{s_2} \leq start_{s_3}$
            \begin{itemize}
-             \item Case 1: $end_{s_2} \geq end_{s_3}$.
+             \item \underline{Proof for $\Leftarrow$}\\
+             Clearly, $s_2 \ioverlap s_3$. \\
+             Similarly, $s_1 \ioverlap s_2 \wedge
+                         s_1 \ioverlap s_3$.
 
-                   \intervals{
-                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
-                     \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
-                   }
+             \item \underline{Proof for $\Rightarrow$}\\
+             Since $s_2 \ioverlap s_3$, $s_2 \iinter s_3$ is defined.\\
+             Without loss of generality, suppose 
+             $start_{s_2} \leq start_{s_3}$
+             \begin{itemize}
+               \item Case 1: $end_{s_2} \geq end_{s_3}$.
 
-                   Then $interval_{s_2 \iinter s_3} = interval_{s_3} 
-                        \Rightarrow s_1 \ioverlap s_2 \iinter s_3$
-             \item Case 2: $end_{s_2} \leq end_{s_3}$.
+                     \intervals{
+                       \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                       \intervalline{\textbf{$s_3$}}{1}{0.5}{2}{4}
+                     }
 
-                   \intervals{
-                     \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
-                     \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
-                   }
+                     Then $interval_{s_2 \iinter s_3} = interval_{s_3} 
+                          \Rightarrow s_1 \ioverlap (s_2 \iinter s_3)$
+               \item Case 2: $end_{s_2} \leq end_{s_3}$.
 
-                   Suppose $s_1 \not\ioverlap s_2 \iinter s_3$\\
-                   Then $start_{s_1} > end_{s_2}$ and
-                        $end_{s_1} < start_{s_3} \Rightarrow
-                        end_{s_1} < start_{s_1} \Rightarrow\Leftarrow$\\
-                   Thus, $s_1 \ioverlap s_2 \iinter s_3$.
+                     \intervals{
+                       \intervalline{\textbf{$s_2$}}{0}{1}{2.5}{4}
+                       \intervalline{\textbf{$s_3$}}{1}{0.5}{3}{4}
+                     }
+
+                     Suppose $s_1 \not\ioverlap s_2 \iinter s_3$\\
+                     Then by our hypothesis,
+                          $start_{s_1} > end_{s_2}$ and
+                          $end_{s_1} < start_{s_3} \Rightarrow
+                          end_{s_1} < start_{s_1} \Rightarrow\Leftarrow$\\
+                     Thus, $s_1 \ioverlap s_2 \iinter s_3$.
+             \end{itemize}
            \end{itemize}
                   
 
@@ -179,7 +187,7 @@ For brevity, let $start_s = start$, $end_s = end$, $name_s = name$, and $interva
         \begin{itemize}
           \item \underline{Proof for $\Leftarrow$}
                  Without loss of generality, assume $s_1 \ioverlap s_2$.\\
-                 Clearly, $s_1 \ioverlap s_2 \iunion s_3$.
+                 Clearly, $s_1 \ioverlap (s_2 \iunion s_3)$.
                    
           \item \underline{Proof for $\Rightarrow$}
                  Without loss of generality, assume $start_{s_2} \leq start_{s_3}$.\\
@@ -231,7 +239,8 @@ We also have 10 Snooze Intervals in $S$, so we'd like to prove that given these 
 
                 \begin{itemize}
                   \item Case 1. $\forall \sigma \in S, s \not\ioverlap \sigma$\\
-                        Clearly, $S \setminus \set{s}$ has no cycles.\\
+                        Clearly, $S \setminus \set{s}$ has
+                        $n$ elements and no cycles.\\
                         By Lemma 1, $S \setminus \set{s}$ has at most 
                         $n-1$ distinct overlapping pairs $\Rightarrow\\
                         S$ has at most $n-1$ distinct overlapping pairs.
@@ -244,7 +253,8 @@ We also have 10 Snooze Intervals in $S$, so we'd like to prove that given these 
                          infinite number of Snooze Intervals, or 
                          overlap with a Snooze Interval already in 
                          the Chain, thus creating a Cycle).\\
-                        Clearly, $S \setminus \set{\lambda}$ has no cycles.\\
+                        Clearly, $S \setminus \set{\lambda}$ has
+                        $n$ elements and no cycles.\\
                         By Lemma 1, $S \setminus \set{\lambda}$ has at
                         most $n-1$ distinct overlapping pairs $\Rightarrow\\
                         S$ has at most $n$ distinct overlapping pairs.
@@ -258,7 +268,7 @@ By the contrapositive of Lemma 1, we can deduce that there is at least one Cycle
 
 To solve our original problem, it suffices to show that the following proposition:
 
-$P(n)="$ if there is a Cycle $C$ of length $n \geq 3$, then $\exists$ distinct $s_1, s_2, s_3 \in C, s_1 \ioverlap (s_2 \iinter s_3)$."
+$P(n)=``$ if there is a Cycle $C$ of length $n \geq 3$, then $\exists$ distinct $s_1, s_2, s_3 \in C, s_1 \ioverlap (s_2 \iinter s_3)$.''
 
 \underline{Proof of $P$ by induction on $n$}
 \begin{itemize}
@@ -271,15 +281,15 @@ $P(n)="$ if there is a Cycle $C$ of length $n \geq 3$, then $\exists$ distinct $
         Let $\set{s_1,s_2...s_n,s_{n+1}}$ be an $n+1-$length cycle.\\
         By definition of Cycles, $s_1 \ioverlap s_2$.\\
         Let $C' = \set{s_1 \iunion s_2, s_3,...s_n, s_{n+1}}$\\
-        By Property 5, $s_3 \ioverlap s_1 \iunion s_2$ and 
-                       $s_{n+1} \ioverlap s_1 \iunion s_2$.\\
+        By Property 5, $s_3 \ioverlap (s_1 \iunion s_2)$ and 
+                       $s_{n+1} \ioverlap (s_1 \iunion s_2)$.\\
         So, $C'$ is a Cycle as well.\\
         By $P(n)$, $\exists$ distinct $x,y,z \in C', x \ioverlap (y \iinter z)$.
 
         \begin{itemize}
           \item Case 1. $s_1 \iunion s_2 \not= x,y $ or $z$. \\
                 Then $x,y,z \in C$
-          \item Case 2. Without less of generality, let 
+          \item Case 2. Without loss of generality (by Property 4), let 
                 $x = s_1 \iunion s_2$.\\
                 Then $(y \iinter z) \ioverlap (s_1 \iunion s_2)$.\\
                 By Property 5, $s_1 \ioverlap (y \iinter z)$ or
