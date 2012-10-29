@@ -56,11 +56,11 @@ public class Week5Problem2
 	  int index = indices.pop();
 	  int count = counts.pop();
           //Loop through each bit in mask
-	  for (; index < max; index++)
+	  if (index < max)
 	  {
             if (mask.testBit(index))
 	    {
-              BigInteger modifiedMask = mask.xor(powersOfTwo[index]);
+              BigInteger modifiedMask = mask.flipBit(index);
 	      int newCount = count+1;
 	      if (newCount == i)
 	      {
