@@ -2,19 +2,30 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{float}
+\usepackage{ifthen}
 \usepackage{tikz}
 \newcommand{\pred}{\mathcal{O}}
 \newcommand{\modrow}{\mathcal{R}}
 \newcommand{\minipascal}{\mathcal{P}}
 
-\newcommand{\drawoddtriangle}{
-  \foreach \i in {-8,...,0}{
-     \node at (\i/4,\i/4)  {1};
-     \node at (-\i/4,\i/4) {1};
-     %Bottom Row
-     \node at (\i/4,-8/4){1};
-     \node at (-\i/4,-8/4){1};
+\newcommand{\drawemptyrow}[4]{
+    \node at (#2/4, #3/4) {#4};
+    \node at (#2/-4, #3/4) {#4};
+  }
+
+\newcommand{\drawrow}[4]{
+  \drawemptyrow{#1}{#2}{#3}{#4}
+  \foreach \i in {0,...,#1}{
+    \node at (#2/-4-\i/-2,#3/4){#4};
+    %\drawemptyrow{\i}{#2+\i}{#3}
+  }
+}
+
+\newcommand{\drawoddtriangle}[2]{
+  \foreach \i in {0,...,7}{
+    \drawemptyrow{\i}{#1+0+\i}{#2+7-\i}{1}
    }
+   \drawrow{7}{#1+7}{#2+21}{1}
   }
 \begin{document}
 
@@ -38,7 +49,7 @@ First, note the first few values for $n$ which satisfy $P$.
 
 Note that they increase by powers of 2. In fact, each of the $n$ we observed are 1 less than a power of 2. Thus, we shall conjecture that $\pred(n)$ is true iff $n = 2^x-1$, for some $x \geq 0$.
 
-Visibly, $\pred(0)$ and $\pred(1)$ are true.
+Visibly, $\pred(0)$ and $\pred(1)$ are true. So, assume $n \geq 1$ and $\pred(n)$ is true $\Rightarrow n = 2^x - 1$, for some $x \geq 0$.
 
 Let $\modrow(n) = $ the sequence of elements in row $n$ of Pascal's Triangle mod 2.
 
@@ -51,7 +62,7 @@ then $\modrow(n-1) = \{1,\underbrace{0,1,...1,0}_{n-2},1\}$\\
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}
-  \drawoddtriangle
+  \drawoddtriangle{0}{0}
 \end{tikzpicture}
 \end{figure}
 
@@ -67,8 +78,8 @@ Thus, we have $\modrow(2n)=\{1,\underbrace{...}_{n-1},0,\underbrace{...}_{n-1},1
 Also, note that ${n+2 \choose 2} \bmod 2 = 1$.
 
 By Pascal's Relation, we get: 
-$$\forall 0 \leq i \leq {n-1}, {{n+1+i} \choose i} \mod 2 = 0$$
-Thus, we can view ${n+1 \choose 0}$ as recursively spawning a new Pascal Triangle. Thus, from this result, and our assumption (and the symmetry of Pascal's Triangle), $\modrow(2n) = \{1,0,1,0,...1,0,1...0,1,0,1\}$, which implies $\modrow(2n+1) = \{1,1,1...1,1,1,1\} = \modrow(2(2^x-1)+1) = \modrow(2^{x+1}-2+1) =
+$$\forall 0 \leq i \leq {n-1}, {{n+1+i} \choose i} \mod 2 = 1$$
+Thus, we can view ${n+1 \choose 0}$ as recursively generating a new Pascal Triangle $\bmod$ 2. Thus, from this result, and our assumption (and the symmetry of Pascal's Triangle), $\modrow(2n) = \{1,\underbrace{0,1,0,...1,0,1...0,1,0}_{2n-1},1\}$, which implies $\modrow(2n+1) = \{1,\underbrace{1,1...1,1,1}_{2n},1\} = \modrow(2(2^x-1)+1) = \modrow(2^{x+1}-2+1) =
 \modrow(2^{x+1}-1)$.
 
 
