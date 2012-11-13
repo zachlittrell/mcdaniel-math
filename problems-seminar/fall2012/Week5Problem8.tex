@@ -50,21 +50,21 @@ First, note the first few values for $n$ which satisfy $\pred$.
 
 Note that they increase by powers of 2. In fact, each of the $n$ we observed are 1 less than a power of 2. Thus, we shall conjecture that $\pred(n)$ is true iff $n = 2^x-1$, for some $x \geq 0$.
 
-Let $\conject(n)$ = ``$\pred(n)$ is true iff $n$ = $2^x-1$, for some $x\geq 0$.
+Let $\conject(x)$ = ``$\pred(2^x-1)$ is true and $\pred(m)$ is false for all $2^{x-1}-1 < m < 2^x-1$.
 
 
-\begin{center}\item \subsubsection*{Proof of $\conject$ by Induction on n}\end{center}
+\begin{center}\item \subsubsection*{Proof of $\conject$ by Induction on x}\end{center}
 
 First, define $\modrow(n,i,j) = $ the sequence of elements in row $n$ of Pascal's Triangle mod 2 from index $i$ to $j$. If $i$ and $j$ are omitted, it is to be assumed $\modrow(n) = \modrow(n, 0, n)$.
 
 As an example, $\modrow(1) = \{1,1\}$, $\modrow(2)= \{1,0,1\}$.
 \begin{center}\item \textbf{Base Cases} \end{center}
 
-When $n = 0 = 2^0-1$ or $n=1=2^1-1$, $\pred(n)$ is true.
+When $x = 1$, $n=2^x-1=1$, $\pred(n)$ is true. Thus, $\conject(1)$ is true.
 
 \begin{center}\item\textbf{Inductive Case} \end{center}
 
-Let $n\geq 1$ and assume $\conject(n)$ is true. Without loss of generality, assume $\pred(n)$ is true. This implies the following:
+Let $x\geq 1$ and assume $\conject(x)$ is true. Let $n = 2^x-1$. This implies the following:
 \begin{enumerate}
   \item $n = 2^x - 1$, for some $x \geq 0$.
   \item $\modrow(n) = \{\underbrace{1,1,...1,1}_{n+1}\}$.
@@ -216,6 +216,6 @@ Combining these, we get that $\modrow(2n+1) = \{\underbrace{1,1..1,1}_{2n+2}\} \
 \end{tikzpicture}
 \end{figure}
 
-Thus, $\conject(2n+1)$ is true, which means by mathematical induction, $\conject$ is true for all $n$.
+Thus, $\conject(x+1)$ is true, which means by mathematical induction, $\conject$ is true for all $x$.
 
 \end{document}
