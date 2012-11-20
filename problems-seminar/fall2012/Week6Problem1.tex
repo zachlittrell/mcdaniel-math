@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+\begin{center}\item \section*{Problem}\end{center}
+
+Given a permutation $\sigma$ in $S_n$, $\sigma(i)$ is a $large$ integer if $\sigma(i) > \sigma(j)$, for all $i < j \leq n$. Find the average number of large integers over all permutations in $S_n$.
+
+\begin{center}\item \section*{Solution}\end{center}
+
+Let $n \geq 1$. To compute the average number of large integers over all permutations in $S_n$, we will find the sum of the number of times index $i$ maps to a large integer divided by $n!$, for each $i$.
+
+Suppose $\sigma \in S_n$ is a permutation where $\sigma(i)$ is a large integer.
+
+Choose $i-1$ integers for indices $1,2..i-1$, and call the set of these choices $L$. By the largeness of $\sigma(i)$, $\sigma(i)$ must be 
+$max(\{1..n\}\setminus L)$.
+Let $U = \{1,2..n\}\setminus L \setminus \{\sigma(i)\}$.
+As we will map indices $i+1...n$ to elements of $U$, we have $|U|!=(n-i)!$
+choices for those indices.
+
+To get the average of the possible combinations, we first choose ${n\choose {i-1}}$, multiply by the number of ways we can arrange them, $(i-1)!$, and multiply that by $(n-i)!$ choices for the last $n-i-1$ indices, and divide this by $n!$.
+
+\begin{align*}
+    \frac{{n\choose {i-1}}(i-1)!(n-i)!}{n!}
+  &=\frac{\frac{n!}{(n-i+1)!(i-1)!}(i-1)!(n-i)!}{n!}
+\\&=\frac{\frac{n!(n-i)!}{(n-i+1)!}}{n!}
+\\&=\frac{(n-i)!}{(n-i+1)!}
+\\&=\frac{1}{n-i+1}
+\end{align*}
+
+Thus, when we add the average for each index, we get that the average number of large integers over all permutations in $S_n$ is 
+$\displaystyle\sum\limits_{i=1}^n \frac{1}{i}$. 
+
+\end{document}
