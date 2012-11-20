@@ -19,14 +19,21 @@ Let $U = \{1,2..n\}\setminus L \setminus \{\sigma(i)\}$.
 As we will map indices $i+1...n$ to elements of $U$, we have $|U|!=(n-i)!$
 choices for those indices.
 
-To get the average of the possible combinations, we first choose ${n\choose {i-1}}$, multiply by the number of ways we can arrange them, $(i-1)!$, and multiply that by $(n-i)!$ choices for the last $n-i-1$ indices, and divide this by $n!$.
+To get the average of the possible combinations, we first choose the first $i-1$ indices, ${n\choose {i-1}}$, multiply by the number of ways we can arrange them, $(i-1)!$, and multiply that by $(n-i)!$ choices for the last $n-i-1$ indices, and divide this by $n!$.
 
 \begin{align*}
-    \frac{{n\choose {i-1}}(i-1)!(n-i)!}{n!}
-  &=\frac{\frac{n!}{(n-i+1)!(i-1)!}(i-1)!(n-i)!}{n!}
-\\&=\frac{\frac{n!(n-i)!}{(n-i+1)!}}{n!}
-\\&=\frac{(n-i)!}{(n-i+1)!}
-\\&=\frac{1}{n-i+1}
+    \frac{{n\choose {i-1}}(i-1)!(n-i)!}
+         {n!}
+  &=\frac{\frac{n!}
+               {(n-i+1)!(i-1)!}(i-1)!(n-i)!}
+         {n!}
+\\&=\frac{\frac{n!(n-i)!}
+               {(n-i+1)!}}
+         {n!}
+\\&=\frac{(n-i)!}
+         {(n-i+1)!}
+\\&=\frac{1}
+         {n-i+1}
 \end{align*}
 
 Thus, when we add the average for each index, we get that the average number of large integers over all permutations in $S_n$ is 
