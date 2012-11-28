@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+\begin{center}\item \section*{Problem}\end{center}
+
+Consider a set $S$ with a binary operation $*$, with the following properties:
+\begin{enumerate}
+  \item \textbf{Closure Property}: $\forall a,b \in S, a*b \in S$.
+  \item \textbf{Left-side Sandwich Property}: $\forall a,b \in S, (a*b)*a=b$
+\end{enumerate}
+Prove that $a*(b*a)=b$, for all $a,b \in S$.
+
+\begin{center}\item \section*{Solution}\end{center}
+
+Let $a,b \in S$.
+By the Left-side Sandwich property, we have:
+$$
+  (b*a)*b = a
+$$
+
+By the Closure property, $(b*a) \in S$, so we may multiply on the right by
+$(b*a)$ to get:
+$$
+  ((b*a)*b)*(b*a) = a*(b*a)
+$$
+
+By the Left-side Sandwich and Closure properties, we may reduce the equivalence to:
+$$
+  b = a*(b*a)
+$$
+
+% By Property 2, we have that $(b*a)*b = a$. Multiply on the right by $(b*a)$ to get $((b*a)*b)*(b*a)=a*(b*a)$. Since $(b*a)\in S$, by Property 1, then by Property 2, we can reduce this to $b=a*(b*a)$.
+\end{document}
