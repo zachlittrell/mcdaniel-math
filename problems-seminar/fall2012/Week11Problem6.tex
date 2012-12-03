@@ -1,0 +1,60 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\newcommand{\pair}[1]{\langle #1 \rangle}
+\begin{document}
+\begin{center}\item\section*{Problem}\end{center}
+For a partition $\pi$ of $\{1,2,...9\}$, let $\pi(x)$ be the number
+of elements in the part containing x.
+Prove that for any two partitions $\pi$ and $\pi'$, there are two distinct
+numbers $x,y \in \{1,2,...9\}$ such that $\pi(x)=\pi(y)$ and
+$\pi'(x)=\pi'(y)$.
+
+\begin{center}\item\section*{Solution}\end{center}
+Given paritions $\pi$ and $\pi'$, suppose no such pair of distinct $x$ and $y$ exists.
+
+Note that for some partition $\pi$, $1 \leq \pi(x) \leq 9$, and 
+$\displaystyle\sum_{l\in range(\pi)} l=9$.
+
+With these constraints, $|range(\pi)|\leq 3$, as otherwise, at minimum, if 
+$range(\pi)=\{1,2,3,4\}$, $\displaystyle\sum_{l\in range(\pi)} l=10 > 9$.
+
+Thus, $|range(\pi) \times range(\pi')|\leq 3*3=9$.
+
+By our assumption, $\pair{\pi(x),\pi'(x)} \not= \pair{\pi(y),\pi'(y)}$,
+$\forall x,y \in \{1,2,...9\} \Rightarrow 
+|range(\pi) \times range(\pi')|\geq 9$.
+
+Thus, $|range(\pi)\times range(\pi')|=9$.
+
+From this, we can derive that $|range(\pi)|=|range(\pi')|=3$.
+
+Note, if for a given $\lambda \in range(\pi)$, if there exists at least 4
+distinct elements $x$ such that $\pi(x)=\lambda$, then by the 
+Pigeonhole Principle, with our pigeons being the elements of 
+$\pi^{-1}[\lambda]$ and our pigeonholes being the elements of $range(\pi')$, there exists distinct $x,y$ s.t. 
+$\pair{\pi(x),\pi'(x)}=\pair{\pi(y),\pi'(y)}$, which violates our assumption.
+
+Thus for each length, $\lambda$, there must exist exactly 3 distinct
+elements $x,y,z \in \{1,2...9\}$ such that $\pi(x)=\pi(y)=\pi(z)=\lambda$
+
+Consider the following cases:
+\begin{itemize}
+  \item \textbf{Case 1.} $\exists x \in \{1,2...9\}, \pi(x)\geq 4$
+        Then by the definition of $\pi$, there are at least 3 other elements
+        that share the same part as $x. \Rightarrow\Leftarrow$
+  \item \textbf{Case 2.} $\exists x \in \{1,2...9\}, \pi(x)=2$.
+        Note, by the definition of $\pi$, 
+        $\forall x \in \{1,2...9\}, \pi(x)=2 \Rightarrow 
+         \exists! y \in \{1,2...9\}\setminus \{x\}, \pi(y)=2$.
+        In other words, if $x$ belongs to a part of length 2, there is 
+        exactly one other distinct element that belongs to the same part.
+        Thus, $2$ divides $|\pi^{-1}[2]|. \Rightarrow\Leftarrow$
+  \item \textbf{Case 3.} $range(\pi)=\{1,3\}$. As shown earlier,
+        there must be exactly 3 lengths in our range. $\Rightarrow\Leftarrow$
+\end{itemize}
+
+Thus, our assumption is false and there must exist two distinct 
+$x,y \in \{1,2...9\}$ such that $\pi(x)=\pi(y)$ and $\pi'(x)=\pi'(y)$.
+
+\end{document}
